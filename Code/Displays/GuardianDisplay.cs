@@ -1,5 +1,6 @@
 using Downfall.Code.Piles;
 using Downfall.Code.Vfx;
+using Downfall.Code.Vfx.Guardian;
 using Godot;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -10,11 +11,11 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace Downfall.Code.Displays;
 
-public class AutomatonDisplay
+public class GuardianDisplay
 {
-	private static readonly Dictionary<Player, NSequenceDisplay> Displays = new();
+	private static readonly Dictionary<Player, NGuardianDisplay> Displays = new();
 
-	static AutomatonDisplay()
+	static GuardianDisplay()
 	{
 		CombatManager.Instance.CombatEnded += _ =>
 		{
@@ -30,7 +31,7 @@ public class AutomatonDisplay
 	}
 
 
-	public static void Register(Player creature, NSequenceDisplay display)
+	public static void Register(Player creature, NGuardianDisplay display)
 	{
 		if (Displays.TryGetValue(creature, out var old))
 			if (GodotObject.IsInstanceValid(old))
@@ -39,9 +40,21 @@ public class AutomatonDisplay
 		Displays[creature] = display;
 	}
 	
-	public static void SetupAutomatonUi(NCombatRoom combatRoom, Player player)
+	public static NCard? GetNCard(CardModel card)
 	{
-		var display = NSequenceDisplay.Create(player);
+		Displays.TryGetValue(card.Owner, out var display);
+		return display?.GetNCard(card) ?? null;
+	}
+
+	public static Vector2? GetPosition(CardModel model)
+	{
+		Displays.TryGetValue(model.Owner, out var display);
+		return display?.GetTargetPosition(model) ?? null;
+	}
+	
+	public static void SetupGuardianUi(NCombatRoom combatRoom, Player player)
+	{
+		var display = NGuardianDisplay.Create(player);
 		var vfxContainer = combatRoom.CombatVfxContainer;
 		vfxContainer.AddChildSafely(display);
 
@@ -50,14 +63,14 @@ public class AutomatonDisplay
 		{
 			var globalTopPos = creatureNode.GetTopOfHitbox();
 			display.Position = vfxContainer.GetGlobalTransform().AffineInverse() * globalTopPos;
-			display.Position += new Vector2(100f, -80f);
+			display.Position += new Vector2(0f, -120f);
 		}
 
 		Register(player, display);
 		display.Refresh();
 	}
 	
-	public static async Task AnimateCardToSequence(CardModel card, AutomatonPile pile, Player creature)
+	public static async Task AnimateCardToStasis(CardModel card, GuardianPile pile, Player creature)
 	{
 		var display = Displays.GetValueOrDefault(creature);
 		if (display == null) return;
@@ -84,13 +97,15 @@ public class AutomatonDisplay
 			.SetEase(Tween.EaseType.Out)
 			.SetTrans(Tween.TransitionType.Cubic);
 
-		tween.TweenProperty(cardNode, "scale", display.Scale, 0.4f)
+		tween.TweenProperty(cardNode, "scale", display.Scale* NStasisSlot.CardScale, 0.4f)
 			.SetEase(Tween.EaseType.Out)
 			.SetTrans(Tween.TransitionType.Cubic);
 
 		await display.ToSignal(tween, Tween.SignalName.Finished);
 
 		cardNode.QueueFree();
-		display.Refresh(force: true);
+		display.Refresh();
 	}
+
+	
 }
