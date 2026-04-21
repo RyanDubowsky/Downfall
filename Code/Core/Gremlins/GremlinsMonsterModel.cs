@@ -28,7 +28,6 @@ public abstract class GremlinsMonsterModel : CustomMonsterModel
     {
         return SetupAnimationState(controller, IdleAnimationName);
     }
-
 }
 
 public class AngryGremlin : GremlinsMonsterModel
