@@ -6,11 +6,11 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace Downfall.Code.Powers.Guardian;
 
-public class TimeSifterPower : GuardianPowerModel
+public class BracingPower : GuardianPowerModel
 {
-    public override async Task BeforeHandDraw(Player player, PlayerChoiceContext ctx, CombatState combatState)
+    public override async Task BeforeHandDraw(Player player, PlayerChoiceContext choiceContext, CombatState combatState)
     {
         if (player.Creature != Owner) return;
-        await GuardianCmd.Accelerate(ctx, player, Amount);
+        await GuardianCmd.Brace(player, Amount);
     }
 }
