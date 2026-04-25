@@ -19,7 +19,4 @@ public class Fury : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

@@ -19,7 +19,4 @@ public class Tricksy : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

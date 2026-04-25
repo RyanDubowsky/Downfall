@@ -19,7 +19,4 @@ public class Pinprick : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

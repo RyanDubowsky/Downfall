@@ -19,7 +19,4 @@ public class Unforgiving : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

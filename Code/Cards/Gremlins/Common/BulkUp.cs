@@ -19,7 +19,4 @@ public class BulkUp : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

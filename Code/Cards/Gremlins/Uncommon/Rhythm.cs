@@ -19,7 +19,4 @@ public class Rhythm : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

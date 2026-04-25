@@ -19,7 +19,4 @@ public class GremlinArms : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

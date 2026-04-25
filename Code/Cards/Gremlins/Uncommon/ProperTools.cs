@@ -19,7 +19,4 @@ public class ProperTools : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

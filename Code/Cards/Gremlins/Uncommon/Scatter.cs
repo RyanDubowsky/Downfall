@@ -19,7 +19,4 @@ public class Scatter : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

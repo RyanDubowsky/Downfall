@@ -19,7 +19,4 @@ public class PourSalt : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

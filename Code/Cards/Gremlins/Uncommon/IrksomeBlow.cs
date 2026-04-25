@@ -19,7 +19,4 @@ public class IrksomeBlow : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

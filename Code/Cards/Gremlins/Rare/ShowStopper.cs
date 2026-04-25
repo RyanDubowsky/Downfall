@@ -19,7 +19,4 @@ public class ShowStopper : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

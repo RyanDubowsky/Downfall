@@ -19,7 +19,4 @@ public class Flurry : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

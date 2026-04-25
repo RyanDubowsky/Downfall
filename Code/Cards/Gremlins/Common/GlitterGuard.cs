@@ -19,7 +19,4 @@ public class GlitterGuard : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

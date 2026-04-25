@@ -19,7 +19,4 @@ public class ArmsTheft : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

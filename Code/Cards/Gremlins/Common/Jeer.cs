@@ -19,7 +19,4 @@ public class Jeer : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

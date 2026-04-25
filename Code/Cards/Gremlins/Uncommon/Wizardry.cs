@@ -19,7 +19,4 @@ public class Wizardry : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

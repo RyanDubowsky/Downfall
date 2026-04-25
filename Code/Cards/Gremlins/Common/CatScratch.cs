@@ -19,7 +19,4 @@ public class CatScratch : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

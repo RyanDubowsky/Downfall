@@ -19,7 +19,4 @@ public class ToeStub : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

@@ -19,7 +19,4 @@ public class CongaLine : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

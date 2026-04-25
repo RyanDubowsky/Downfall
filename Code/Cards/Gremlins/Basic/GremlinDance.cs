@@ -19,7 +19,4 @@ public class GremlinDance : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

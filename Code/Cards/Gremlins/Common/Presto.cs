@@ -19,7 +19,4 @@ public class Presto : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

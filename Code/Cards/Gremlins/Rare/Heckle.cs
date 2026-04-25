@@ -19,7 +19,4 @@ public class Heckle : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

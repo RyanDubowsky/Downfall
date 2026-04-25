@@ -19,7 +19,4 @@ public class Nob : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

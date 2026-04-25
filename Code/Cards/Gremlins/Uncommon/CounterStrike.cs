@@ -19,7 +19,4 @@ public class CounterStrike : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

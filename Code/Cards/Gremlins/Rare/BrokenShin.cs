@@ -19,7 +19,4 @@ public class BrokenShin : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

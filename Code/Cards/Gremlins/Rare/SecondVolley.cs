@@ -19,7 +19,4 @@ public class SecondVolley : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

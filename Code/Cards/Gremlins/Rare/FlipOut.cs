@@ -19,7 +19,4 @@ public class FlipOut : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

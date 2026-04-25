@@ -19,7 +19,4 @@ public class Polish : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

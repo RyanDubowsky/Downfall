@@ -19,7 +19,4 @@ public class TargetWounds : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

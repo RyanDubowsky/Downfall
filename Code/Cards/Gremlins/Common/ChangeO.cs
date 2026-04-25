@@ -19,7 +19,4 @@ public class ChangeO : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

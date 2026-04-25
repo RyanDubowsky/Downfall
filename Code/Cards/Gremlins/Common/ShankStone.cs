@@ -19,7 +19,4 @@ public class ShankStone : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

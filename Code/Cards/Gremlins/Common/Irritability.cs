@@ -19,7 +19,4 @@ public class Irritability : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

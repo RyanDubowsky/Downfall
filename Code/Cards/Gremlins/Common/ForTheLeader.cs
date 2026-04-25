@@ -19,7 +19,4 @@ public class ForTheLeader : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

@@ -19,7 +19,4 @@ public class FairyDust : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

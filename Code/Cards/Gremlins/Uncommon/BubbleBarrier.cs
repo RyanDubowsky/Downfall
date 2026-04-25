@@ -19,7 +19,4 @@ public class BubbleBarrier : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

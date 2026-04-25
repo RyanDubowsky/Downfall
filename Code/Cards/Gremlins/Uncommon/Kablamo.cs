@@ -19,7 +19,4 @@ public class Kablamo : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

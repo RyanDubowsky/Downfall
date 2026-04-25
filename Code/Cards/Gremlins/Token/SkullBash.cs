@@ -19,7 +19,4 @@ public class SkullBash : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

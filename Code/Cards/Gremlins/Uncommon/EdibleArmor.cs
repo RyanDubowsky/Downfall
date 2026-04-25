@@ -19,7 +19,4 @@ public class EdibleArmor : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

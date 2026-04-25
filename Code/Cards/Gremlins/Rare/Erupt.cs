@@ -19,7 +19,4 @@ public class Erupt : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

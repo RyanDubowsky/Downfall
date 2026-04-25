@@ -19,7 +19,4 @@ public class ShadowShiv : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

@@ -19,7 +19,4 @@ public class Revel : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

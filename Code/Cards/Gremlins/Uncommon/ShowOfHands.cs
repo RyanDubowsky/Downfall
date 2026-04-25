@@ -19,7 +19,4 @@ public class ShowOfHands : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

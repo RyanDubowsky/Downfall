@@ -19,7 +19,4 @@ public class Patsy : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

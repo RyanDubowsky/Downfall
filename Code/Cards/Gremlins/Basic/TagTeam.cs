@@ -19,7 +19,4 @@ public class TagTeam : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

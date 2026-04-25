@@ -19,7 +19,4 @@ public class DaggerDance : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

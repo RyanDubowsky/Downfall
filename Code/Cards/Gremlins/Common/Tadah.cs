@@ -19,7 +19,4 @@ public class Tadah : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

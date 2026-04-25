@@ -19,7 +19,4 @@ public class RageBreak : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

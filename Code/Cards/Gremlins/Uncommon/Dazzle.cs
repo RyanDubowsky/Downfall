@@ -19,7 +19,4 @@ public class Dazzle : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

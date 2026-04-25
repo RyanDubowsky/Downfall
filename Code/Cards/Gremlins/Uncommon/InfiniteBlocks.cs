@@ -19,7 +19,4 @@ public class InfiniteBlocks : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

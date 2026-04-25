@@ -19,7 +19,4 @@ public class Enthusiasm : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

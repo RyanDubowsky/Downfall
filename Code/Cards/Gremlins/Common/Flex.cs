@@ -19,7 +19,4 @@ public class Flex : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

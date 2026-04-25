@@ -19,7 +19,4 @@ public class Encore : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

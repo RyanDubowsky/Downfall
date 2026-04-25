@@ -19,7 +19,4 @@ public class Astound : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

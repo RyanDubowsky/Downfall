@@ -19,7 +19,4 @@ public class FeelTheAudience : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

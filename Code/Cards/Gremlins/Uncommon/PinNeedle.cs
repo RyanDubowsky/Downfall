@@ -19,7 +19,4 @@ public class PinNeedle : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

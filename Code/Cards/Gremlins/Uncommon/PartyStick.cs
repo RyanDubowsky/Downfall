@@ -19,7 +19,4 @@ public class PartyStick : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

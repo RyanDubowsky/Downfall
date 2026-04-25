@@ -19,7 +19,4 @@ public class Glimmer : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

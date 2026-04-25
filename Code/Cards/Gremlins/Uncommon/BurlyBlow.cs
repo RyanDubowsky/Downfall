@@ -19,7 +19,4 @@ public class BurlyBlow : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

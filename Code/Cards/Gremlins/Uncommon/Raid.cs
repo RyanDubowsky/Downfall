@@ -19,7 +19,4 @@ public class Raid : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

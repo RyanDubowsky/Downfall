@@ -19,7 +19,4 @@ public class MakeshiftArmor : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

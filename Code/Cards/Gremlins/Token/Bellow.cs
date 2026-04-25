@@ -19,7 +19,4 @@ public class Bellow : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

@@ -19,7 +19,4 @@ public class AggressiveDefense : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

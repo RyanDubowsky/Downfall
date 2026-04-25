@@ -19,7 +19,4 @@ public class Mockery : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

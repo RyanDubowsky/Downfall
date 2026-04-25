@@ -19,7 +19,4 @@ public class TwistTheKnife : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

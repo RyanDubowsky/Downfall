@@ -19,7 +19,4 @@ public class Pickpocket : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

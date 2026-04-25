@@ -19,7 +19,4 @@ public class Duplicate : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

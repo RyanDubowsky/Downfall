@@ -19,7 +19,4 @@ public class Stupend : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

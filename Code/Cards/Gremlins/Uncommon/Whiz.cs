@@ -19,7 +19,4 @@ public class Whiz : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

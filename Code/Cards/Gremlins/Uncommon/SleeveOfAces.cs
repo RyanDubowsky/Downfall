@@ -19,7 +19,4 @@ public class SleeveOfAces : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }

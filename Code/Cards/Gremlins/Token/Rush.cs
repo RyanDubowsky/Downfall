@@ -19,7 +19,4 @@ public class Rush : GremlinsCardModel
     }
 
 
-    protected override void OnUpgrade()
-    {
-    }
 }
