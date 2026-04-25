@@ -1,23 +1,23 @@
-using BaseLib.Utils;
+﻿using BaseLib.Utils;
 using Downfall.Code.Abstract;
 using Downfall.Code.Abstract.CardModels;
-using Downfall.Code.Keywords;
+using Downfall.Code.Powers.Hexaghost;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace Downfall.Code.Cards.Hexaghost.Uncommon;
 
 [Pool(typeof(HexaghostCardPool))]
-public class FastForward : HexaghostCardModel
+public class HotStreak : HexaghostCardModel
 {
-    public FastForward() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public HotStreak() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.None)
     {
-        WithCards(2, 1);
-        WithKeywords(DownfallKeywords.Advance);
+        WithPower<HotStreakPower>(6, 3);
+        WithTip(typeof(SoulBurnPower));
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
-        await CommonActions.Draw(this, ctx);
+        await CommonActions.ApplySelf<HotStreakPower>(ctx, this);
     }
 }
