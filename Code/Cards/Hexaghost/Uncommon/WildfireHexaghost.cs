@@ -1,4 +1,4 @@
-using BaseLib.Utils;
+﻿using BaseLib.Utils;
 using Downfall.Code.Abstract;
 using Downfall.Code.Abstract.CardModels;
 using Downfall.Code.Powers.Hexaghost;
@@ -8,16 +8,15 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 namespace Downfall.Code.Cards.Hexaghost.Uncommon;
 
 [Pool(typeof(HexaghostCardPool))]
-public class ExtraCrispy : HexaghostCardModel
+public class WildfireHexaghost : HexaghostCardModel
 {
-    public ExtraCrispy() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.None)
+    public WildfireHexaghost() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.None)
     {
-        WithPower<ExtraCrispyPower>(6, 2);
+        WithPower<WildfirePower>(5, 7);
     }
     
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
-        await CommonActions.ApplySelf<ExtraCrispyPower>(ctx, this);
+        await CommonActions.ApplySelf<WildfirePower>(ctx, this);
     }
-    
 }
