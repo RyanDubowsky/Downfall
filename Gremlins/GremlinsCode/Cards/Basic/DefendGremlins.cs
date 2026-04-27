@@ -1,0 +1,21 @@
+using BaseLib.Utils;
+using Gremlins.GremlinsCode.Core;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+
+namespace Gremlins.GremlinsCode.Cards.Basic;
+
+[Pool(typeof(GremlinsCardPool))]
+public class DefendGremlins : GremlinsCardModel
+{
+    public DefendGremlins() : base(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
+    {
+    }
+
+    // TODO: Implement
+    protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
+    {
+    }
+
+
+}
