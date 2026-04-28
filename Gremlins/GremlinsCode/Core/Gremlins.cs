@@ -14,6 +14,7 @@ public class Gremlins : DownfallCharacterModel
 {
     private static readonly Color Color = new(0xCA5B5BFF);
     public override string CharId => "Gremlins";
+    public override string ModId => GremlinsMainFile.ModId;
     public override Color NameColor => Color;
     public override Color LabOutlineColor => Color;
     public override Color DeckEntryCardColor => Color;

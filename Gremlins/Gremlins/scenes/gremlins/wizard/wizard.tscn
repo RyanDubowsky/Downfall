@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://dky2244g821kb"]
+
+[ext_resource type="SpineAtlasResource" uid="uid://bfmc5sasnp0y7" path="res://Gremlins/scenes/gremlins/wizard/wizard.spatlas" id="1_nw0la"]
+[ext_resource type="SpineSkeletonFileResource" uid="uid://erla8xswla3w" path="res://Gremlins/scenes/gremlins/wizard/wizard.spskel" id="2_4auvt"]
+
+[sub_resource type="SpineSkeletonDataResource" id="SpineSkeletonDataResource_u07h4"]
+atlas_res = ExtResource("1_nw0la")
+skeleton_file_res = ExtResource("2_4auvt")
+
+[node name="Wizard" type="SpineSprite"]
+skeleton_data_res = SubResource("SpineSkeletonDataResource_u07h4")
+preview_skin = "Default"
+preview_animation = "-- Empty --"
+preview_frame = false
+preview_time = 0.0
