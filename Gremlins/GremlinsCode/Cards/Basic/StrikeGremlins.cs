@@ -10,6 +10,7 @@ public class StrikeGremlins : GremlinsCardModel
 {
     public StrikeGremlins() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
     {
+        WithTags(CardTag.Strike);
     }
 
     // TODO: Implement

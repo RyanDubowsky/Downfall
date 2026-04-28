@@ -10,6 +10,7 @@ public class DefendGremlins : GremlinsCardModel
 {
     public DefendGremlins() : base(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
     {
+        WithTags(CardTag.Defend);
     }
 
     // TODO: Implement
