@@ -23,7 +23,7 @@ public class Gremlins : DownfallCharacterModel
 
     public override CharacterGender Gender => CharacterGender.Neutral;
     protected override CharacterModel? UnlocksAfterRunAs => null;
-    public override int StartingHp => 72;
+    public override int StartingHp => 16;
     public override int StartingGold => 99;
 
 

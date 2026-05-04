@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://mijco4qxnw3x"]
+[gd_scene load_steps=5 format=3 uid="uid://mijco4qxnw3x"]
 
 [ext_resource type="SpineAtlasResource" uid="uid://bkrjctnx0702y" path="res://Gremlins/scenes/gremlins/nob/nob.spatlas" id="1_ojuoa"]
 [ext_resource type="SpineSkeletonFileResource" uid="uid://cup8cka107b78" path="res://Gremlins/scenes/gremlins/nob/nob.spskel" id="2_fdnjg"]
@@ -7,9 +7,13 @@
 atlas_res = ExtResource("1_ojuoa")
 skeleton_file_res = ExtResource("2_fdnjg")
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ojuoa"]
+blend_mode = 4
+
 [node name="Nob" type="SpineSprite"]
 skeleton_data_res = SubResource("SpineSkeletonDataResource_p8f5k")
 preview_skin = "Default"
-preview_animation = "-- Empty --"
+preview_animation = "animation"
 preview_frame = false
 preview_time = 0.0
+material = SubResource("CanvasItemMaterial_ojuoa")
