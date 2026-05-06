@@ -5,6 +5,7 @@ using Gremlins.GremlinsCode.Cards.Basic;
 using Gremlins.GremlinsCode.Relics;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Entities.Powers;
+using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
@@ -65,7 +66,7 @@ public class Gremlins : DownfallCharacterModel
 
 public class GremlinsRelicPool : DownfallRelicPool<Gremlins>;
 
-public abstract class GremlinsRelicModel : DownfallRelicModel<Gremlins>;
+public abstract class GremlinsRelicModel(RelicRarity rarity) : DownfallRelicModel<Gremlins>(rarity);
 
 public abstract class GremlinsPowerModel(
     PowerType powerType = PowerType.Buff,

@@ -5,8 +5,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 namespace Gremlins.GremlinsCode.Relics;
 
 [Pool(typeof(GremlinsRelicPool))]
-public class GremlinBomb : GremlinsRelicModel
+public class GremlinBomb() : GremlinsRelicModel(RelicRarity.Rare)
 {
-    public override RelicRarity Rarity => RelicRarity.Rare;
-    // TODO
+        // TODO
 }

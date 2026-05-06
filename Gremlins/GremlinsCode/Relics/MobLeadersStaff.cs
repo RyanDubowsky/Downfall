@@ -6,10 +6,9 @@ using MegaCrit.Sts2.Core.Models;
 namespace Gremlins.GremlinsCode.Relics;
 
 [Pool(typeof(GremlinsRelicPool))]
-public class MobLeadersStaff : GremlinsRelicModel
+public class MobLeadersStaff() : GremlinsRelicModel(RelicRarity.Starter)
 {
-    public override RelicRarity Rarity => RelicRarity.Starter;
-
+    
     public override RelicModel GetUpgradeReplacement()
     {
         return ModelDb.Relic<MobLeadersCrown>();
