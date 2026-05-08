@@ -29,8 +29,9 @@ public static class GremlinsCmd
             visuals.KillGremlin(index);
     }
     
-    public static Creature? GetCurrentGremlin(Player player)
+    public static Creature? GetCurrentGremlin(Player? player)
     {
+        if (player == null) return null;
         var state = GremlinsRunModel.GetState(player);
         return state.Active;
     }
@@ -73,7 +74,7 @@ public static class GremlinsCmd
         return chosenIndex;
     }
 
-// Then Tag Team / Gremlin Arms calls:
+
     public static async Task SwapToSelected(PlayerChoiceContext ctx, Player player)
     {
         var index = await SelectGremlin(ctx, player);
@@ -81,22 +82,14 @@ public static class GremlinsCmd
         SwapToIndex(player, index);
     }
     
-    public static void RotateGremlin(Player player)
+    public static void SwapToNext(Player player)
     {
         var state = GremlinsRunModel.GetState(player);
-
-        // Save current HP before rotating away
-        state.SavedHp[state.ActiveIndex] = (int)player.Creature.CurrentHp;
-
         var next = state.GetNextLivingIndex();
         if (next < 0) return;
-
-        state.ActiveIndex = next;
-        SwitchGremlin(player.Creature, next);
-
-        player.Creature.SetMaxHpInternal(state.SavedMaxHp[next]);
-        player.Creature.SetCurrentHpInternal(state.SavedHp[next]);
+        SwapToIndex(player, next);
     }
+    
     
     public static void SwapToGremlinType<T>(Player player) where T : GremlinsMonsterModel
     {
@@ -183,5 +176,12 @@ public static class GremlinsCmd
         SwitchGremlin(player.Creature, index);
         player.Creature.SetMaxHpInternal(state.SavedMaxHp[index]);
         player.Creature.SetCurrentHpInternal(state.SavedHp[index]);
+    }
+
+    public static async Task TriggerGremlinBonus(PlayerChoiceContext ctx, Player player)
+    {
+        var gremlin = GetCurrentGremlin(player);
+        if (gremlin?.Monster is not GremlinsMonsterModel monster) return;
+        await monster.TriggerGremlinBonus(ctx, player);
     }
 }

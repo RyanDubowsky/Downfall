@@ -1,4 +1,6 @@
 using BaseLib.Utils;
+using Downfall.DownfallCode.Commands;
+using Gremlins.GremlinsCode.Cards.Token;
 using Gremlins.GremlinsCode.Core;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -10,10 +12,12 @@ public class Tadah : GremlinsCardModel
 {
     public Tadah() : base(0, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
+        WithUpgradingCardTip<Ward>();
     }
-
-    // TODO: Implement
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await DownfallCardCmd.GiveCard<Ward>(Owner, PileType.Hand, upgraded: IsUpgraded);
+        GremlinsCmd.SwapToGremlinType<WizardGremlin>(Owner);
     }
 }

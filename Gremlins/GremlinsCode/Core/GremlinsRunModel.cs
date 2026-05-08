@@ -14,7 +14,7 @@ public class GremlinsRunModel() : CustomSingletonModel(false, true)
     private static readonly CustomMonsterModel[] FormModels =
     [
         ModelDb.Monster<ShieldGremlin>(),
-        ModelDb.Monster<AngryGremlin>(),
+        ModelDb.Monster<MadGremlin>(),
         ModelDb.Monster<FatGremlin>(),
         ModelDb.Monster<SneakGremlin>(),
         ModelDb.Monster<WizardGremlin>()

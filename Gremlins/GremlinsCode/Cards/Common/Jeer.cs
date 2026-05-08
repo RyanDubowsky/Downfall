@@ -1,6 +1,8 @@
 using BaseLib.Utils;
+using Downfall.DownfallCode.Commands;
 using Gremlins.GremlinsCode.Core;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace Gremlins.GremlinsCode.Cards.Common;
@@ -10,10 +12,15 @@ public class Jeer : GremlinsCardModel
 {
     public Jeer() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
+        WithDamage(7, 4);
+        WithTempHp(2, 2);
     }
 
-    // TODO: Implement
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
+        var target = cardPlay.Target;
+        if (target == null || target.Powers.All(e => e.Type != PowerType.Debuff)) return;
+        await DownfallCmd.GainTempHp(ctx, this);
     }
 }

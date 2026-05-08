@@ -1,7 +1,9 @@
 using BaseLib.Utils;
+using Downfall.DownfallCode.Commands;
 using Gremlins.GremlinsCode.Core;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace Gremlins.GremlinsCode.Cards.Common;
 
@@ -10,10 +12,15 @@ public class ToeStub : GremlinsCardModel
 {
     public ToeStub() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
+        WithDamage(5, 3);
+        WithPower<VulnerablePower>(2, 1);
+        WithTip(typeof(WeakPower));
     }
-
-    // TODO: Implement
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
+        if (!cardPlay.Target?.HasPower<WeakPower>() ?? true) return;
+        await MyCommonActions.Apply<VulnerablePower>(ctx, this, cardPlay);
     }
 }

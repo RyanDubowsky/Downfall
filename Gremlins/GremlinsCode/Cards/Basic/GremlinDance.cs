@@ -25,8 +25,7 @@ public class GremlinDance : GremlinsCardModel
         WithCards(2);
         WithTips(card =>
         {
-            if (card.IsCanonical) return [];
-            return GremlinsCmd.GetCurrentGremlin(card.Owner)?.Monster switch
+            return GremlinsCmd.GetCurrentGremlin(card._owner)?.Monster switch
             {
                 ShieldGremlin => [HoverTipFactory.Static(StaticHoverTip.Block)],
                 FatGremlin    => [HoverTipFactory.FromPower<TemporaryStrengthDownPower>()],
@@ -37,8 +36,13 @@ public class GremlinDance : GremlinsCardModel
         });
     }
 
-    public override bool GainsBlock => IsMutable && GremlinsCmd.GetCurrentGremlin(Owner)?.Monster is  ShieldGremlin;
-    public override TargetType TargetType => IsMutable && GremlinsCmd.GetCurrentGremlin(Owner)?.Monster is not AngryGremlin ? TargetType.AnyEnemy : TargetType.AllEnemies; 
+    private MonsterModel? CurrentGremlinMonster =>
+        IsMutable ? GremlinsCmd.GetCurrentGremlin(_owner)?.Monster : null;
+
+    public override bool GainsBlock => CurrentGremlinMonster is ShieldGremlin;
+    public override TargetType TargetType => CurrentGremlinMonster is not MadGremlin ? TargetType.AnyEnemy : TargetType.AllEnemies;
+    private string GremlinName => CurrentGremlinMonster?.GetType().Name ?? "None";
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         var current = GremlinsCmd.GetCurrentGremlin(Owner);
@@ -74,5 +78,4 @@ public class GremlinDance : GremlinsCardModel
         description.Add("GremlinVariant", GremlinName);
     }
 
-    private string GremlinName => GremlinsCmd.GetCurrentGremlin(Owner)?.Monster?.GetType().Name ?? "None";
 }

@@ -10,10 +10,13 @@ public class Patsy : GremlinsCardModel
 {
     public Patsy() : base(0, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
+        WithBlock(4, 2);
     }
-
-    // TODO: Implement
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await CommonActions.CardBlock(this, cardPlay);
+        GremlinsCmd.SwapToNext(Owner);
+
     }
 }
