@@ -4,6 +4,7 @@ using Downfall.DownfallCode.Utils.Sound;
 using Godot;
 using Gremlins.GremlinsCode.Cards.Basic;
 using Gremlins.GremlinsCode.Relics;
+using Gremlins.GremlinsCode.Vfx;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Entities.Relics;
@@ -67,7 +68,7 @@ public class Gremlins : DownfallCharacterModel
 
     public override NCreatureVisuals? CreateCustomVisuals()
     {
-        return GD.Load<PackedScene>("res://Downfall/character/scenes/combat_scene/gremlins_combat.tscn")
+        return GD.Load<PackedScene>("res://Gremlins/scenes/character/combat.tscn")
             .Instantiate<NGremlinsCreatureVisuals>();
     }
 }

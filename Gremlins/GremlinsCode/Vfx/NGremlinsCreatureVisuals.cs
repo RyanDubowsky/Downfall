@@ -3,7 +3,7 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 
-namespace Downfall.DownfallCode.Nodes;
+namespace Gremlins.GremlinsCode.Vfx;
 
 [GlobalClass]
 public partial class NGremlinsCreatureVisuals : NCreatureVisuals
@@ -16,21 +16,86 @@ public partial class NGremlinsCreatureVisuals : NCreatureVisuals
         _gremlins = gremlins;
         ApplySlotPositions(false);
 
-        foreach (var node in _gremlins.Select(gremlin => NCombatRoom.Instance?.GetCreatureNode(gremlin)))
+        foreach (var node in _gremlins.Select(g => NCombatRoom.Instance?.GetCreatureNode(g)))
             node?.ToggleIsInteractable(true);
-        var healthBar = GetParent<NCreature>()
-            ?.GetNode<Control>("%HealthBar") // NCreatureStateDisplay
-            ?.GetNode<NHealthBar>("%HealthBar"); // NHealthBar inside it
-        healthBar?.HpBarContainer.Hide();
+
+        HideGremlinBar(ActiveGremlinIndex);
+
+        // Defer so pet NCreature nodes finish their own _Ready/UpdateBounds first
+        SyncBoundsToActive();
+    }
+    
+    
+    public void ReviveGremlin(int index)
+    {
+        if (index < 0 || index >= _gremlins.Count) return;
+        var node = NCombatRoom.Instance?.GetCreatureNode(_gremlins[index]);
+        if (node == null) return;
+
+        node.Visible = true;
+        var tween = node.CreateTween().SetParallel();
+        tween.TweenProperty(node, "modulate", Colors.White, 0.4)
+            .SetEase(Tween.EaseType.Out);
+        tween.TweenProperty(node, "scale", Vector2.One * GetSlotScale(GetSlot(index)), 0.4)
+            .SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Back);
+    }
+    
+    private void HideGremlinBar(int index)
+    {
+        var node = NCombatRoom.Instance?.GetCreatureNode(_gremlins[index]);
+        node?.GetNode<Control>("%HealthBar")
+            ?.GetNode<NHealthBar>("%HealthBar")
+            ?.HpBarContainer.Hide();
+    }
+    
+    private void ShowGremlinBar(int index)
+    {
+        var node = NCombatRoom.Instance?.GetCreatureNode(_gremlins[index]);
+        node?.GetNode<Control>("%HealthBar")
+            ?.GetNode<NHealthBar>("%HealthBar")
+            ?.HpBarContainer.Show();
     }
 
     public void SwitchToGremlin(int index)
     {
         if (index < 0 || index >= _gremlins.Count) return;
+        ShowGremlinBar(ActiveGremlinIndex);
         ActiveGremlinIndex = index;
         ApplySlotPositions(true);
+        HideGremlinBar(ActiveGremlinIndex);
+        SyncBoundsToActive();
     }
+    
+    private void SyncBoundsToActive()
+    {
+        var playerNode = GetParent<NCreature>();
+        if (playerNode == null || _gremlins.Count == 0) return;
 
+        var activeNode = NCombatRoom.Instance?.GetCreatureNode(_gremlins[ActiveGremlinIndex]);
+        if (activeNode == null) return;
+
+        //playerNode.Position = activeNode.Position;
+
+        //var size      = activeNode.Hitbox.Size with { X = activeNode.Hitbox.Size.X * 2f };
+        //var globalPos = activeNode.Hitbox.GlobalPosition;
+
+        //playerNode.Hitbox.Size           = size;
+        //playerNode.Hitbox.GlobalPosition = globalPos;
+
+        /*var reticle = playerNode.GetNodeOrNull<Control>("%SelectionReticle");
+        if (reticle != null)
+        {
+            reticle.Size           = size;
+            reticle.GlobalPosition = globalPos;
+            reticle.PivotOffset    = size * 0.5f;
+        }*/
+
+        //playerNode.IntentContainer.Position = activeNode.IntentContainer.Position;
+
+        var stateDisplay = playerNode.GetNodeOrNull<NCreatureStateDisplay>("%HealthBar");
+        stateDisplay?.SetCreatureBounds(playerNode.Hitbox);
+    }
+    
     public void KillGremlin(int index)
     {
         if (index < 0 || index >= _gremlins.Count) return;
@@ -53,7 +118,7 @@ public partial class NGremlinsCreatureVisuals : NCreatureVisuals
 
     private static Vector2 GetSlotOffset(int slot)
     {
-        return slot == 0 ? Vector2.Zero : new Vector2(-80f - (slot - 1) * 60f, 0f);
+        return slot == 0 ? Vector2.Zero : new Vector2(-120f - (slot - 1) * 60f, 0f);
     }
 
     private static float GetSlotScale(int slot)
@@ -88,6 +153,10 @@ public partial class NGremlinsCreatureVisuals : NCreatureVisuals
                     .SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Cubic);
                 tween.TweenProperty(node, "scale", targetScale, 0.3)
                     .SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Cubic);
+
+                // Only re-sync after the active gremlin (slot 0) finishes moving
+                if (slot == 0)
+                    tween.Chain().TweenCallback(Callable.From(SyncBoundsToActive));
             }
             else
             {
@@ -96,4 +165,5 @@ public partial class NGremlinsCreatureVisuals : NCreatureVisuals
             }
         }
     }
+    
 }

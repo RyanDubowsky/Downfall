@@ -35,7 +35,7 @@ public class AngryGremlin : GremlinsMonsterModel
     protected override string IdleAnimationName => "idle";
 
     public override string CustomVisualPath =>
-        "res://Downfall/character/scenes/combat_scene/gremlins/angry_combat.tscn";
+        "res://Gremlins/scenes/gremlins/angry/angry_combat.tscn";
 }
 
 public class ShieldGremlin : GremlinsMonsterModel
@@ -43,13 +43,14 @@ public class ShieldGremlin : GremlinsMonsterModel
     protected override string IdleAnimationName => "idle";
 
     public override string CustomVisualPath =>
-        "res://Downfall/character/scenes/combat_scene/gremlins/shield_combat.tscn";
+        "res://Gremlins/scenes/gremlins/shield/shield_combat.tscn";
 }
 
 public class FatGremlin : GremlinsMonsterModel
 {
     protected override string IdleAnimationName => "animation";
-    public override string CustomVisualPath => "res://Downfall/character/scenes/combat_scene/gremlins/fat_combat.tscn";
+    public override string CustomVisualPath => 
+        "res://Gremlins/scenes/gremlins/fat/fat_combat.tscn";
 }
 
 public class SneakGremlin : GremlinsMonsterModel
@@ -57,7 +58,7 @@ public class SneakGremlin : GremlinsMonsterModel
     protected override string IdleAnimationName => "animation";
 
     public override string CustomVisualPath =>
-        "res://Downfall/character/scenes/combat_scene/gremlins/sneak_combat.tscn";
+        "res://Gremlins/scenes/gremlins/sneak/sneak_combat.tscn";
 }
 
 public class WizardGremlin : GremlinsMonsterModel
@@ -65,5 +66,14 @@ public class WizardGremlin : GremlinsMonsterModel
     protected override string IdleAnimationName => "animation";
 
     public override string CustomVisualPath =>
-        "res://Downfall/character/scenes/combat_scene/gremlins/wizard_combat.tscn";
+        "res://Gremlins/scenes/gremlins/wizard/wizard_combat.tscn";
+}
+
+
+public class GremlinNob : GremlinsMonsterModel
+{
+    protected override string IdleAnimationName => "animation";
+
+    public override string CustomVisualPath =>
+        "res://Gremlins/scenes/gremlins/wizard/wizard_combat.tscn";
 }

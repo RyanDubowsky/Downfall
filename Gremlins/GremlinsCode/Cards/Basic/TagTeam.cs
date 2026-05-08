@@ -11,9 +11,9 @@ public class TagTeam : GremlinsCardModel
     public TagTeam() : base(0, CardType.Skill, CardRarity.Basic, TargetType.Self)
     {
     }
-
-    // TODO: Implement
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await GremlinsCmd.SwapToSelected(ctx, Owner);
     }
 }

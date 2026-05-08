@@ -1,19 +1,78 @@
 using BaseLib.Utils;
+using Downfall.DownfallCode.Powers;
+
 using Gremlins.GremlinsCode.Core;
+using Gremlins.GremlinsCode.Powers;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace Gremlins.GremlinsCode.Cards.Basic;
 
 [Pool(typeof(GremlinsCardPool))]
 public class GremlinDance : GremlinsCardModel
 {
+
+
     public GremlinDance() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
     {
+        WithDamage(6, 3);
+        WithBlock(6, 3);
+        WithCards(2);
+        WithTips(card =>
+        {
+            if (card.IsCanonical) return [];
+            return GremlinsCmd.GetCurrentGremlin(card.Owner)?.Monster switch
+            {
+                ShieldGremlin => [HoverTipFactory.Static(StaticHoverTip.Block)],
+                FatGremlin    => [HoverTipFactory.FromPower<TemporaryStrengthDownPower>()],
+                WizardGremlin => [HoverTipFactory.FromPower<WizPower>()],
+                GremlinNob    => [HoverTipFactory.FromPower<StrengthPower>()],
+                _             => []
+            };
+        });
     }
 
-    // TODO: Implement
+    public override bool GainsBlock => IsMutable && GremlinsCmd.GetCurrentGremlin(Owner)?.Monster is  ShieldGremlin;
+    public override TargetType TargetType => IsMutable && GremlinsCmd.GetCurrentGremlin(Owner)?.Monster is not AngryGremlin ? TargetType.AnyEnemy : TargetType.AllEnemies; 
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        var current = GremlinsCmd.GetCurrentGremlin(Owner);
+        if (current?.Monster is not GremlinsMonsterModel gremlin) return;
+        
+        await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
+        switch (gremlin)
+        {
+            case SneakGremlin:
+                await CommonActions.Draw(this, ctx);
+                break;
+            case ShieldGremlin:
+                await CommonActions.CardBlock(this, cardPlay);
+                break;
+            case FatGremlin:
+                if (cardPlay.Target == null) return;
+                await PowerCmd.Apply<TemporaryStrengthDownPower>(ctx, cardPlay.Target, 2, Owner.Creature, this);
+                break;
+            case WizardGremlin:
+                await PowerCmd.Apply<WizPower>(ctx, Owner.Creature, 2, Owner.Creature, this);
+                break;
+            case GremlinNob:
+                await PowerCmd.Apply<StrengthPower>(ctx, Owner.Creature, 2, Owner.Creature, this);
+                break;
+            
+        }
     }
+
+
+    protected override void AddExtraArgsToDescription(LocString description)
+    {
+        base.AddExtraArgsToDescription(description);
+        description.Add("GremlinVariant", GremlinName);
+    }
+
+    private string GremlinName => GremlinsCmd.GetCurrentGremlin(Owner)?.Monster?.GetType().Name ?? "None";
 }
