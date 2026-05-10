@@ -1,5 +1,8 @@
 using BaseLib.Utils;
+using Downfall.DownfallCode.Commands;
+using Gremlins.GremlinsCode.Cards.Token;
 using Gremlins.GremlinsCode.Core;
+using Gremlins.GremlinsCode.Powers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
@@ -10,10 +13,16 @@ public class Astound : GremlinsCardModel
 {
     public Astound() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
+        WithBlock(5, 2);
+        WithUpgradingCardTip<Ward>();
+        WithTip(typeof(WizPower));
+        WithCards(2);
     }
-
-    // TODO: Implement
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await CommonActions.CardBlock(this, cardPlay);
+        if (Owner.Creature.GetPowerAmount<WizPower>() < 3) return;
+        await DownfallCardCmd.GiveCards<Ward>(Owner, PileType.Hand, DynamicVars.Cards.IntValue,  upgraded: IsUpgraded);
     }
 }

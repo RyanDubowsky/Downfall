@@ -20,4 +20,6 @@ public abstract class GremlinsCardModel(
     {
         await PlayEffect(ctx, cardPlay);
     }
+
+    public virtual bool IgnoreWiz => false;
 }

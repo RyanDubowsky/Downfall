@@ -1,4 +1,5 @@
 ﻿using Godot;
+using Gremlins.GremlinsCode.Events;
 using Gremlins.GremlinsCode.Vfx;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -15,11 +16,14 @@ namespace Gremlins.GremlinsCode.Core;
 
 public static class GremlinsCmd
 {
-    public static void SwitchGremlin(Creature creature, int index)
+    public static async Task SwitchGremlin(PlayerChoiceContext? ctx, Player player, int index)
     {
-        var node = NCombatRoom.Instance?.GetCreatureNode(creature);
+        if (player.Creature.CombatState == null) return;
+        var node = NCombatRoom.Instance?.GetCreatureNode(player.Creature);
         if (node?.Visuals is NGremlinsCreatureVisuals visuals)
             visuals.SwitchToGremlin(index);
+        if (ctx == null) return;
+        await GremlinsHook.AfterGremlinSwap(player.Creature.CombatState, ctx, player);
     }
 
     public static void KillGremlin(Creature creature, int index)
@@ -36,7 +40,7 @@ public static class GremlinsCmd
         return state.Active;
     }
 
-    public static async Task<int> SelectGremlin(PlayerChoiceContext ctx, Player player)
+    private static async Task<int> SelectGremlin(PlayerChoiceContext ctx, Player player)
     {
         var state = GremlinsRunModel.GetState(player);
         var living = state.Gremlins
@@ -79,19 +83,19 @@ public static class GremlinsCmd
     {
         var index = await SelectGremlin(ctx, player);
         if (index < 0) return;
-        SwapToIndex(player, index);
+        await SwapToIndex(ctx, player, index);
     }
     
-    public static void SwapToNext(Player player)
+    public static async Task SwapToNext(PlayerChoiceContext ctx, Player player)
     {
         var state = GremlinsRunModel.GetState(player);
         var next = state.GetNextLivingIndex();
         if (next < 0) return;
-        SwapToIndex(player, next);
+        await SwapToIndex(ctx, player, next);
     }
     
     
-    public static void SwapToGremlinType<T>(Player player) where T : GremlinsMonsterModel
+    public static  async Task SwapToGremlinType<T>(PlayerChoiceContext ctx, Player player) where T : GremlinsMonsterModel
     {
         var state = GremlinsRunModel.GetState(player);
         var index = -1;
@@ -102,11 +106,11 @@ public static class GremlinsCmd
             break;
         }
         if (index < 0) return;
-        SwapToIndex(player, index);
+        await SwapToIndex(ctx, player, index);
     }
 
     
-     public static void SwapToRandomGremlin(Player player)
+     public static  async Task SwapToRandomGremlin(PlayerChoiceContext ctx, Player player)
     {
         var state = GremlinsRunModel.GetState(player);
         var candidates = Enumerable.Range(0, state.Gremlins.Count)
@@ -114,7 +118,7 @@ public static class GremlinsCmd
             .ToList();
         if (candidates.Count == 0) return;
         var index = candidates[Rng.Chaotic.NextInt(candidates.Count)];
-        SwapToIndex(player, index);
+        await SwapToIndex(ctx, player, index);
     }
 
     // -- swap to player-chosen gremlin (for Tag Team, Gremlin Arms) --
@@ -123,16 +127,16 @@ public static class GremlinsCmd
     {
         var state = GremlinsRunModel.GetState(player);
         return state.Gremlins
-            .Where((g, i) => state.SavedHp[i] > 0 && i != state.ActiveIndex)
+            .Where((_, i) => state.SavedHp[i] > 0 && i != state.ActiveIndex)
             .ToList();
     }
 
-    public static void SwapToGremlin(Player player, Creature gremlin)
+    public static  async Task SwapToGremlin(PlayerChoiceContext ctx, Player player, Creature gremlin)
     {
         var state = GremlinsRunModel.GetState(player);
         var index = state.Gremlins.IndexOf(gremlin);
         if (index < 0) return;
-        SwapToIndex(player, index);
+        await SwapToIndex(ctx, player, index);
     }
 
     // -- resurrect a random dead gremlin with given HP --
@@ -168,12 +172,12 @@ public static class GremlinsCmd
     }
 
     // -- shared swap logic --
-    private static void SwapToIndex(Player player, int index)
+    private static  async Task SwapToIndex(PlayerChoiceContext ctx, Player player, int index)
     {
         var state = GremlinsRunModel.GetState(player);
-        state.SavedHp[state.ActiveIndex] = (int)player.Creature.CurrentHp;
+        state.SavedHp[state.ActiveIndex] = player.Creature.CurrentHp;
         state.ActiveIndex = index;
-        SwitchGremlin(player.Creature, index);
+        await SwitchGremlin(ctx, player, index);
         player.Creature.SetMaxHpInternal(state.SavedMaxHp[index]);
         player.Creature.SetCurrentHpInternal(state.SavedHp[index]);
     }

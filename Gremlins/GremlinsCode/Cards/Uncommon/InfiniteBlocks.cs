@@ -1,5 +1,7 @@
 using BaseLib.Utils;
+using Gremlins.GremlinsCode.Cards.Token;
 using Gremlins.GremlinsCode.Core;
+using Gremlins.GremlinsCode.Powers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
@@ -10,10 +12,14 @@ public class InfiniteBlocks : GremlinsCardModel
 {
     public InfiniteBlocks() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.None)
     {
-    }
+        WithPower<InfiniteBlocksPower>(1);
+        WithKeyword(CardKeyword.Innate, UpgradeType.Add);
+        WithTip(typeof(Ward));
 
-    // TODO: Implement
+    }
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await CommonActions.ApplySelf<InfiniteBlocksPower>(ctx, this);
     }
 }

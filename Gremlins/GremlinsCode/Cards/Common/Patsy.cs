@@ -16,7 +16,7 @@ public class Patsy : GremlinsCardModel
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardBlock(this, cardPlay);
-        GremlinsCmd.SwapToNext(Owner);
+        await GremlinsCmd.SwapToNext(ctx, Owner);
 
     }
 }

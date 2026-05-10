@@ -42,14 +42,17 @@ public static class PatchGremlinDeath
         var next = state.GetNextLivingIndex();
         if (next < 0) return true;
 
+        __result = RunAsync(player, state, next);
+        return false;
+    }
+    
+    static async Task RunAsync(Player player, GremlinsRunModel.GremlinState state, int next)
+    {
         state.SavedHp[state.ActiveIndex] = 0;
         GremlinsCmd.KillGremlin(player.Creature, state.ActiveIndex);
         state.ActiveIndex = next;
-        GremlinsCmd.SwitchGremlin(player.Creature, next);
+        await GremlinsCmd.SwitchGremlin(null, player, next);
         player.Creature.SetMaxHpInternal(state.SavedMaxHp[next]);
         player.Creature.SetCurrentHpInternal(state.SavedHp[next]);
-
-        __result = Task.CompletedTask; // ← prevent null Task await
-        return false;
     }
 }

@@ -19,6 +19,6 @@ public class Irritability : GremlinsCardModel
     {
         await CommonActions.CardBlock(this, cardPlay);
         await CommonActions.ApplySelf<TemporaryThornsPower>(ctx, this);
-        GremlinsCmd.SwapToGremlinType<MadGremlin>(Owner);
+        await GremlinsCmd.SwapToGremlinType<MadGremlin>(ctx, Owner);
     }
 }

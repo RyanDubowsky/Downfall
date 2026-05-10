@@ -18,6 +18,6 @@ public class Tricksy : GremlinsCardModel
     {
         var cards =  await CommonActions.Draw(this, ctx);
         await CardCmd.Discard(ctx, cards.Where(e => e.Type != CardType.Attack));
-        GremlinsCmd.SwapToGremlinType<SneakGremlin>(Owner);
+        await GremlinsCmd.SwapToGremlinType<SneakGremlin>(ctx, Owner);
     }
 }

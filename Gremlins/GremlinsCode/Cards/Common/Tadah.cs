@@ -18,6 +18,6 @@ public class Tadah : GremlinsCardModel
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await DownfallCardCmd.GiveCard<Ward>(Owner, PileType.Hand, upgraded: IsUpgraded);
-        GremlinsCmd.SwapToGremlinType<WizardGremlin>(Owner);
+        await GremlinsCmd.SwapToGremlinType<WizardGremlin>(ctx, Owner);
     }
 }
