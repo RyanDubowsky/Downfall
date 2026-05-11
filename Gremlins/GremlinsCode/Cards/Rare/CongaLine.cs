@@ -1,5 +1,6 @@
 using BaseLib.Utils;
 using Gremlins.GremlinsCode.Core;
+using Gremlins.GremlinsCode.Powers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
@@ -10,10 +11,12 @@ public class CongaLine : GremlinsCardModel
 {
     public CongaLine() : base(2, CardType.Power, CardRarity.Rare, TargetType.None)
     {
+        WithKeyword(CardKeyword.Innate, UpgradeType.Add);
+        WithPower<CongaLinePower>(1);
     }
-
-    // TODO: Implement
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await CommonActions.ApplySelf<CongaLinePower>(ctx, this);
     }
 }

@@ -1,4 +1,5 @@
 using BaseLib.Utils;
+using Downfall.DownfallCode.Powers;
 using Gremlins.GremlinsCode.Core;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -10,10 +11,12 @@ public class Erupt : GremlinsCardModel
 {
     public Erupt() : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
+        WithPower<TemporaryStrengthUpPower>(5, 2);
+        WithKeyword(CardKeyword.Exhaust);
     }
-
-    // TODO: Implement
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await CommonActions.ApplySelf<TemporaryStrengthUpPower>(ctx, this);
     }
 }

@@ -1,5 +1,4 @@
-﻿using Godot;
-using Gremlins.GremlinsCode.Events;
+﻿using Gremlins.GremlinsCode.Events;
 using Gremlins.GremlinsCode.Vfx;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -16,54 +15,47 @@ namespace Gremlins.GremlinsCode.Core;
 
 public static class GremlinsCmd
 {
-    public static async Task SwitchGremlin(PlayerChoiceContext? ctx, Player player, int index)
+    public static async Task SwitchGremlin(PlayerChoiceContext? ctx, Player player, Creature gremlin)
     {
         if (player.Creature.CombatState == null) return;
-        var node = NCombatRoom.Instance?.GetCreatureNode(player.Creature);
+        var state = GremlinsRunModel.GetState(player);
+        var node  = NCombatRoom.Instance?.GetCreatureNode(player.Creature);
         if (node?.Visuals is NGremlinsCreatureVisuals visuals)
-            visuals.SwitchToGremlin(index);
+            visuals.SwitchToGremlin(gremlin, state.Bench.Prepend(gremlin));
         if (ctx == null) return;
         await GremlinsHook.AfterGremlinSwap(player.Creature.CombatState, ctx, player);
     }
-
-    public static void KillGremlin(Creature creature, int index)
-    {
-        var node = NCombatRoom.Instance?.GetCreatureNode(creature);
-        if (node?.Visuals is NGremlinsCreatureVisuals visuals)
-            visuals.KillGremlin(index);
-    }
     
-    public static Creature? GetCurrentGremlin(Player? player)
+    public static void KillGremlin(Creature playerCreature, Creature gremlin)
     {
-        if (player == null) return null;
-        var state = GremlinsRunModel.GetState(player);
-        return state.Active;
+        var node = NCombatRoom.Instance?.GetCreatureNode(playerCreature);
+        if (node?.Visuals is NGremlinsCreatureVisuals visuals)
+            NGremlinsCreatureVisuals.KillGremlin(gremlin);
     }
 
-    private static async Task<int> SelectGremlin(PlayerChoiceContext ctx, Player player)
+    public static Creature? GetCurrentGremlin(Player? player) =>
+        player == null ? null : GremlinsRunModel.GetState(player).Active;
+
+    private static async Task<Creature?> SelectGremlin(PlayerChoiceContext ctx, Player player)
     {
         var state = GremlinsRunModel.GetState(player);
-        var living = state.Gremlins
-            .Select((g, i) => (g, i))
-            .Where(x => state.SavedHp[x.i] > 0 && x.i != state.ActiveIndex)
-            .Select(x => x.g)
-            .ToList();
+        var bench = state.Bench.ToList();
 
-        if (living.Count == 0) return -1;
-        if (living.Count == 1) return state.Gremlins.IndexOf(living[0]);
+        if (bench.Count == 0) return null;
+        if (bench.Count == 1) return bench[0];
 
         var choiceId = RunManager.Instance.PlayerChoiceSynchronizer.ReserveChoiceId(player);
         await ctx.SignalPlayerChoiceBegun(PlayerChoiceOptions.None);
 
-        int chosenIndex;
+        Creature? chosen;
         if (LocalContext.IsMe(player))
         {
-            var overlay = NGremlinSelectOverlay.Create(living);
+            var overlay = NGremlinSelectOverlay.Create(bench);
             NOverlayStack.Instance!.Push(overlay);
             overlay.ZIndex = 10;
             var slot = await overlay.AwaitSelection();
             NOverlayStack.Instance.Remove(overlay);
-            chosenIndex = state.Gremlins.IndexOf(living[slot]);
+            chosen = bench[slot];
             RunManager.Instance.PlayerChoiceSynchronizer.SyncLocalChoice(
                 player, choiceId, PlayerChoiceResult.FromIndex(slot));
         }
@@ -71,115 +63,76 @@ public static class GremlinsCmd
         {
             var slot = (await RunManager.Instance.PlayerChoiceSynchronizer
                 .WaitForRemoteChoice(player, choiceId)).AsIndex();
-            chosenIndex = slot < 0 ? -1 : state.Gremlins.IndexOf(living[slot]);
+            chosen = slot < 0 ? null : bench[slot];
         }
 
         await ctx.SignalPlayerChoiceEnded();
-        return chosenIndex;
+        return chosen;
     }
-
 
     public static async Task SwapToSelected(PlayerChoiceContext ctx, Player player)
     {
-        var index = await SelectGremlin(ctx, player);
-        if (index < 0) return;
-        await SwapToIndex(ctx, player, index);
+        var gremlin = await SelectGremlin(ctx, player);
+        if (gremlin == null) return;
+        await Swap(ctx, player, gremlin);
     }
-    
+
     public static async Task SwapToNext(PlayerChoiceContext ctx, Player player)
     {
         var state = GremlinsRunModel.GetState(player);
-        var next = state.GetNextLivingIndex();
-        if (next < 0) return;
-        await SwapToIndex(ctx, player, next);
-    }
-    
-    
-    public static  async Task SwapToGremlinType<T>(PlayerChoiceContext ctx, Player player) where T : GremlinsMonsterModel
-    {
-        var state = GremlinsRunModel.GetState(player);
-        var index = -1;
-        for (var i = 0; i < state.Gremlins.Count; i++)
-        {
-            if (state.Gremlins[i].Monster is not T || state.SavedHp[i] <= 0) continue;
-            index = i;
-            break;
-        }
-        if (index < 0) return;
-        await SwapToIndex(ctx, player, index);
+        if (state.Next == null) return;
+        await Swap(ctx, player, state.Next);
     }
 
-    
-     public static  async Task SwapToRandomGremlin(PlayerChoiceContext ctx, Player player)
+    public static async Task SwapToType<T>(PlayerChoiceContext ctx, Player player)
+        where T : GremlinsMonsterModel
     {
-        var state = GremlinsRunModel.GetState(player);
-        var candidates = Enumerable.Range(0, state.Gremlins.Count)
-            .Where(i => i != state.ActiveIndex && state.SavedHp[i] > 0)
-            .ToList();
-        if (candidates.Count == 0) return;
-        var index = candidates[Rng.Chaotic.NextInt(candidates.Count)];
-        await SwapToIndex(ctx, player, index);
+        var target = GremlinsRunModel.GetState(player).Bench
+            .FirstOrDefault(g => g.Monster is T);
+        if (target == null) return;
+        await Swap(ctx, player, target);
     }
 
-    // -- swap to player-chosen gremlin (for Tag Team, Gremlin Arms) --
-    // call this then await the selection result
-    public static List<Creature> GetLivingGremlins(Player player)
+    public static async Task SwapToRandom(PlayerChoiceContext ctx, Player player)
     {
-        var state = GremlinsRunModel.GetState(player);
-        return state.Gremlins
-            .Where((_, i) => state.SavedHp[i] > 0 && i != state.ActiveIndex)
-            .ToList();
+        var bench = GremlinsRunModel.GetState(player).Bench.ToList();
+        if (bench.Count == 0) return;
+        await Swap(ctx, player, bench[Rng.Chaotic.NextInt(bench.Count)]);
     }
 
-    public static  async Task SwapToGremlin(PlayerChoiceContext ctx, Player player, Creature gremlin)
+    public static List<Creature> GetLivingGremlins(Player player) =>
+        GremlinsRunModel.GetState(player).Bench.ToList();
+
+    public static int GetLivingGremlinCount(Player player)
     {
         var state = GremlinsRunModel.GetState(player);
-        var index = state.Gremlins.IndexOf(gremlin);
-        if (index < 0) return;
-        await SwapToIndex(ctx, player, index);
+        return (state.Active != null ? 1 : 0) + state.Bench.Count();
     }
 
-    // -- resurrect a random dead gremlin with given HP --
     public static Creature? ResurrectRandomGremlin(Player player, int hp)
     {
         var state = GremlinsRunModel.GetState(player);
-        var dead = Enumerable.Range(0, state.Gremlins.Count)
-            .Where(i => state.SavedHp[i] <= 0)
+        var dead  = state.Gremlins
+            .Where(g => state.HpOf(g).Hp <= 0)
             .ToList();
         if (dead.Count == 0) return null;
 
-        var index = dead[Rng.Chaotic.NextInt(dead.Count)];
-        state.SavedHp[index]    = hp;
-        state.SavedMaxHp[index] = Math.Max(state.SavedMaxHp[index], hp);
-
-        // Sync onto the pet creature too
-        var gremlin = state.Gremlins[index];
+        var gremlin = dead[Rng.Chaotic.NextInt(dead.Count)];
+        var maxHp   = Math.Max(state.HpOf(gremlin).MaxHp, hp);
+        state.Revive(gremlin, hp, maxHp);
         gremlin.SetCurrentHpInternal(hp);
 
-        // Re-show the gremlin visually
         var node = NCombatRoom.Instance?.GetCreatureNode(player.Creature);
         if (node?.Visuals is NGremlinsCreatureVisuals visuals)
-            visuals.ReviveGremlin(index);
+            visuals.ReviveGremlin(gremlin);
 
         return gremlin;
     }
 
-    // -- get living gremlin count (for Raid, Revel) --
-    public static int GetLivingGremlinCount(Player player)
+    public static async Task SwapToGremlin(PlayerChoiceContext ctx, Player player, Creature gremlin)
     {
-        var state = GremlinsRunModel.GetState(player);
-        return state.SavedHp.Count(hp => hp > 0);
-    }
-
-    // -- shared swap logic --
-    private static  async Task SwapToIndex(PlayerChoiceContext ctx, Player player, int index)
-    {
-        var state = GremlinsRunModel.GetState(player);
-        state.SavedHp[state.ActiveIndex] = player.Creature.CurrentHp;
-        state.ActiveIndex = index;
-        await SwitchGremlin(ctx, player, index);
-        player.Creature.SetMaxHpInternal(state.SavedMaxHp[index]);
-        player.Creature.SetCurrentHpInternal(state.SavedHp[index]);
+        if (!GremlinsRunModel.GetState(player).Gremlins.Contains(gremlin)) return;
+        await Swap(ctx, player, gremlin);
     }
 
     public static async Task TriggerGremlinBonus(PlayerChoiceContext ctx, Player player)
@@ -187,5 +140,16 @@ public static class GremlinsCmd
         var gremlin = GetCurrentGremlin(player);
         if (gremlin?.Monster is not GremlinsMonsterModel monster) return;
         await monster.TriggerGremlinBonus(ctx, player);
+    }
+
+    private static async Task Swap(PlayerChoiceContext ctx, Player player, Creature target)
+    {
+        var state = GremlinsRunModel.GetState(player);
+        state.SaveHp((int)player.Creature.CurrentHp);
+        state.SwapTo(target);
+        var (hp, maxHp) = state.HpOf(target);
+        await SwitchGremlin(ctx, player, target);
+        player.Creature.SetMaxHpInternal(maxHp);
+        player.Creature.SetCurrentHpInternal(hp);
     }
 }

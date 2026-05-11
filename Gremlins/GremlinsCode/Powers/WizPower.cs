@@ -1,17 +1,95 @@
-﻿using Gremlins.GremlinsCode.Core;
+﻿using Downfall.DownfallCode.Interfaces;
+using Gremlins.GremlinsCode.Cards;
+using Gremlins.GremlinsCode.Core;
+using Gremlins.GremlinsCode.Events;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
 
 namespace Gremlins.GremlinsCode.Powers;
 
-public class WizPower : GremlinsPowerModel
+public class WizPower : GremlinsPowerModel, IHasSecondAmount
 {
-    public override async Task AfterPowerAmountChanged(PlayerChoiceContext ctx, PowerModel power, decimal amount, Creature? applier,
+
+    public WizPower()
+    {
+        WithVar("ExtraDamage", 7);
+    }
+
+    protected override Task AfterApplied(PlayerChoiceContext ctx, Creature? applier, CardModel? cardSource)
+    {
+        UpdateExtraDamage();
+        return Task.CompletedTask;
+    }
+
+    public void UpdateExtraDamage()
+    {
+        var a = ExtraDamage;
+        var b = DynamicVars["ExtraDamage"].BaseValue;
+        if (a == b) return;
+        DynamicVars["ExtraDamage"].BaseValue = a;
+        this.InvokeSecondAmountChanged();
+    }
+
+    public override Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier,
         CardModel? cardSource)
     {
-        if (power != this || Amount < 3 || Owner.HasPower<BangPower>()) return;
-        await PowerCmd.Apply<BangPower>(ctx, Owner, 7, applier, cardSource);
+        if (power == this)this.InvokeSecondAmountChanged();
+        return Task.CompletedTask;
+    }
+
+    private decimal ExtraDamage => GremlinsHook.ModifyWizExtraDamage(this, 7);
+
+    public string GetSecondAmount() =>  Amount < 3 ? "" :  $"{DynamicVars["ExtraDamage"].BaseValue}";
+    
+    
+    protected override object InitInternalData() => new Data();
+
+    public override Task BeforeAttack(AttackCommand command)
+    {
+        if (Amount < 3 || command.Attacker != Owner || !command.DamageProps.IsPoweredAttack())
+            return Task.CompletedTask;
+        var internalData = GetInternalData<Data>();
+        if (internalData.CommandToModify != null || command.ModelSource != null && command.ModelSource is not CardModel || !command.DamageProps.IsPoweredAttack())
+            return Task.CompletedTask;
+        internalData.CommandToModify = command;
+        return Task.CompletedTask;
+    }
+
+    public override decimal ModifyDamageAdditive(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+    {
+        if (Amount < 3 ||  Owner != dealer || !props.IsPoweredAttack())
+            return 0M;
+        var internalData = GetInternalData<Data>();
+        return internalData.CommandToModify != null && cardSource != null && 
+            cardSource != internalData.CommandToModify.ModelSource || internalData.CommandToModify != null && 
+            internalData.CommandToModify.Attacker != dealer ? 0M : DynamicVars["ExtraDamage"].BaseValue;
+    }
+
+    public override async Task AfterAttack(PlayerChoiceContext ctx, AttackCommand command)
+    {
+        if (Amount < 3 ) return;
+        var internalData = GetInternalData<Data>();
+        if (command != internalData.CommandToModify)
+            return;
+        if (internalData.CommandToModify.ModelSource is GremlinsCardModel { IgnoreWiz: true })
+        {
+            internalData.CommandToModify = null;
+            return;
+        };
+        await PowerCmd.Remove<WizPower>(Owner);
+    }
+
+    private class Data
+    {
+        public AttackCommand? CommandToModify;
     }
 }

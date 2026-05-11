@@ -1,4 +1,6 @@
 ﻿using Godot;
+using HarmonyLib;
+using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace Gremlins.GremlinsCode.Vfx;
@@ -6,12 +8,13 @@ namespace Gremlins.GremlinsCode.Vfx;
 [GlobalClass]
 public partial class NSpineCreatureVisuals : NCreatureVisuals
 {
+    private Vector2 _basePosition;
+    private bool _wasFlipped;
+    
     public override void _Ready()
     {
         base._Ready();
-
-        // Fix dark seams: atlas uses premultiplied alpha data,
-        // so the spine sprite must use PremultAlpha blend mode
+      
         var premultMat = new CanvasItemMaterial
         {
             BlendMode = CanvasItemMaterial.BlendModeEnum.PremultAlpha
@@ -21,5 +24,17 @@ public partial class NSpineCreatureVisuals : NCreatureVisuals
             SpineBody.SetNormalMaterial(premultMat);
         else
             GetCurrentBody().Material = premultMat;
+        Callable.From(() => _basePosition = _body.Position).CallDeferred();
+    }
+    
+    public override void _Process(double delta)
+    {
+        var isFlipped = _body.Scale.X < 0;
+        if (isFlipped == _wasFlipped) return;
+        _wasFlipped = isFlipped;
+
+        _body.Position = isFlipped
+            ? new Vector2(-_basePosition.X, _basePosition.Y)
+            : _basePosition;
     }
 }

@@ -1,4 +1,5 @@
 using BaseLib.Utils;
+using Downfall.DownfallCode.Extensions;
 using Gremlins.GremlinsCode.Core;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -26,10 +27,8 @@ public class Pinprick : GremlinsCardModel
 
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
-        if (card != this || !IsUpgraded) return;
-        var copy = card.CreateClone();
-        copy.AddKeyword(CardKeyword.Exhaust);
-        copy.AddKeyword(CardKeyword.Ethereal);
+        if (card != this || !IsUpgraded || this.IsEcho()) return;
+        var copy = card.CreateEcho();
         await CardPileCmd.Add(copy, PileType.Hand);
     }
 }

@@ -19,14 +19,11 @@ public class GremlinsModel() : CustomSingletonModel(true, false)
         if (player?.Character is not Gremlins) return;
 
         var state = GremlinsRunModel.GetState(player);
-        state.SavedHp[state.ActiveIndex] = target.CurrentHp;
+        if (state.Active == null) return;
 
-        var activePet = state.Active;
-        if (activePet != null)
-        {
-            activePet.SetMaxHpInternal(target.MaxHp);
-            activePet.SetCurrentHpInternal(target.CurrentHp);
-        }
+        state.SaveHp(target.CurrentHp);
+        state.Active.SetMaxHpInternal(target.MaxHp);
+        state.Active.SetCurrentHpInternal(target.CurrentHp);
     }
 }
 
@@ -39,20 +36,27 @@ public static class PatchGremlinDeath
         if (player?.Character is not Gremlins) return true;
 
         var state = GremlinsRunModel.GetState(player);
-        var next = state.GetNextLivingIndex();
-        if (next < 0) return true;
+        var dying = state.Active;
+        if (dying == null) return true;
 
-        __result = RunAsync(player, state, next);
+        state.Kill(dying);
+
+        var next = state.Active;
+        if (next == null) return true;
+
+        __result = RunAsync(player, state, dying, next);
         return false;
     }
-    
-    static async Task RunAsync(Player player, GremlinsRunModel.GremlinState state, int next)
+
+    static async Task RunAsync(
+        Player player, GremlinState state,
+        Creature dying, Creature next)
     {
-        state.SavedHp[state.ActiveIndex] = 0;
-        GremlinsCmd.KillGremlin(player.Creature, state.ActiveIndex);
-        state.ActiveIndex = next;
+        var (hp, maxHp) = state.HpOf(next);
         await GremlinsCmd.SwitchGremlin(null, player, next);
-        player.Creature.SetMaxHpInternal(state.SavedMaxHp[next]);
-        player.Creature.SetCurrentHpInternal(state.SavedHp[next]);
+        player.Creature.SetMaxHpInternal(maxHp);
+        player.Creature.SetCurrentHpInternal(hp);
+
+        GremlinsCmd.KillGremlin(player.Creature, dying);
     }
 }

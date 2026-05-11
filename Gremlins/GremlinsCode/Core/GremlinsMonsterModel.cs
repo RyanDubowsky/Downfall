@@ -124,5 +124,5 @@ public class GremlinNob : GremlinsMonsterModel
     protected override string IdleAnimationName => "animation";
 
     public override string CustomVisualPath =>
-        "res://Gremlins/scenes/gremlins/wizard/wizard_combat.tscn";
+        "res://Gremlins/scenes/gremlins/nob/nob_combat.tscn";
 }

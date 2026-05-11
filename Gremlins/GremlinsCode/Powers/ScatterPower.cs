@@ -22,7 +22,7 @@ public class ScatterPower : GremlinsPowerModel
     protected override async Task AfterModifyingHpLostAfterOsty(PlayerChoiceContext ctx)
     {
         if (Owner.Player == null) return;
-        await GremlinsCmd.SwapToRandomGremlin(ctx, Owner.Player);
+        await GremlinsCmd.SwapToRandom(ctx, Owner.Player);
         await PowerCmd.Decrement(this);
     }
 

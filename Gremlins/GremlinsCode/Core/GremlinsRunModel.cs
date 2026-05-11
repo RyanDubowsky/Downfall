@@ -1,9 +1,9 @@
 ﻿using BaseLib.Abstracts;
-using Downfall.DownfallCode.Nodes;
 using Gremlins.GremlinsCode.Vfx;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 
@@ -30,12 +30,6 @@ public class GremlinsRunModel() : CustomSingletonModel(false, true)
         return state;
     }
 
-    public static List<Creature>? GetGremlins(Player player) =>
-        _states.TryGetValue(player, out var s) ? s.Gremlins : null;
-
-    public static int GetActiveIndex(Player player) =>
-        _states.TryGetValue(player, out var s) ? s.ActiveIndex : 0;
-
     public override Task BeforeCombatStart()
     {
         var combatState = CombatManager.Instance.DebugOnlyGetState();
@@ -52,17 +46,14 @@ public class GremlinsRunModel() : CustomSingletonModel(false, true)
 
             foreach (var model in FormModels)
             {
-                var mutable = model.ToMutable();
+                var mutable  = model.ToMutable();
                 var creature = combatState.CreateCreature(mutable, CombatSide.Player, null);
                 mutable.SetUpForCombat();
                 creature.PetOwner = player;
                 player.PlayerCombatState.AddPetInternal(creature);
-                state.Gremlins.Add(creature);
+                state.Register(creature, (int)creature.CurrentHp, (int)creature.MaxHp);
                 NCombatRoom.Instance!.AddCreature(creature);
             }
-
-            state.SavedHp    = state.Gremlins.Select(g => (int)g.CurrentHp).ToArray();
-            state.SavedMaxHp = state.Gremlins.Select(g => (int)g.MaxHp).ToArray();
 
             var creatureNode = NCombatRoom.Instance?.GetCreatureNode(player.Creature);
             if (creatureNode?.Visuals is NGremlinsCreatureVisuals visuals)
@@ -71,27 +62,74 @@ public class GremlinsRunModel() : CustomSingletonModel(false, true)
 
         return Task.CompletedTask;
     }
+}
 
-    public class GremlinState
+public class GremlinState
+{
+    private static readonly Logger Log = GremlinsMainFile.Logger;
+
+    private readonly LinkedList<Creature> _rotation = new();
+    private readonly Dictionary<Creature, (int Hp, int MaxHp)> _hp = new();
+    private readonly List<Creature> _gremlins = [];
+    public Creature? Next => _rotation.First?.Next?.Value;
+    public IReadOnlyList<Creature> Gremlins => _gremlins;
+    public Creature? Active                 => _rotation.First?.Value;
+    public IEnumerable<Creature> Bench      => _rotation.Skip(1);
+
+    internal void Register(Creature gremlin, int hp, int maxHp)
     {
-        public List<Creature> Gremlins { get; } = [];
-        public int[] SavedHp    { get; set; } = [];
-        public int[] SavedMaxHp { get; set; } = [];
-        public int ActiveIndex  { get; set; }
-
-        public Creature? Active => Gremlins.ElementAtOrDefault(ActiveIndex);
-
-        public bool HasLivingGremlins => SavedHp.Any(hp => hp > 0);
-
-        public int GetNextLivingIndex()
-        {
-            var count = Gremlins.Count;
-            for (var i = 1; i < count; i++)
-            {
-                var next = (ActiveIndex + i) % count;
-                if (SavedHp[next] > 0) return next;
-            }
-            return -1;
-        }
+        ArgumentNullException.ThrowIfNull(gremlin);
+        if (_hp.ContainsKey(gremlin)) throw new InvalidOperationException($"{gremlin} already registered.");
+        _gremlins.Add(gremlin);
+        _hp[gremlin] = (hp, maxHp);
+        _rotation.AddLast(gremlin);
+        Log.Info($"[GremlinState] Registered {gremlin} hp={hp} maxHp={maxHp} | rotation={RotationString()}");
     }
+
+    internal void SwapTo(Creature target)
+    {
+        if (!_rotation.Contains(target)) throw new InvalidOperationException($"{target} is not alive.");
+        if (target == Active) return;
+        var current = _rotation.First!.Value;
+        _rotation.RemoveFirst();
+        _rotation.AddLast(current);
+        _rotation.Remove(target);
+        _rotation.AddFirst(target);
+        Log.Info($"[GremlinState] SwapTo {target} | previous={current} | rotation={RotationString()}");
+    }
+
+    internal void Kill(Creature gremlin)
+    {
+        if (!_hp.ContainsKey(gremlin)) throw new ArgumentException($"Unknown gremlin {gremlin}.");
+        _rotation.Remove(gremlin);
+        _hp[gremlin] = (0, _hp[gremlin].MaxHp);
+        Log.Info($"[GremlinState] Killed {gremlin} | rotation={RotationString()}");
+    }
+
+    internal void Revive(Creature gremlin, int hp, int maxHp)
+    {
+        if (!_hp.ContainsKey(gremlin)) throw new ArgumentException($"Unknown gremlin {gremlin}.");
+        if (_rotation.Contains(gremlin)) throw new InvalidOperationException($"{gremlin} is already alive.");
+        _hp[gremlin] = (hp, Math.Max(maxHp, hp));
+        _rotation.AddLast(gremlin);
+        Log.Info($"[GremlinState] Revived {gremlin} hp={hp} maxHp={maxHp} | rotation={RotationString()}");
+    }
+
+    internal void SaveHp(int hp)
+    {
+        if (Active == null) return;
+        _hp[Active] = (hp, _hp[Active].MaxHp);
+        Log.Info($"[GremlinState] SaveHp {Active} hp={hp}");
+    }
+
+    internal (int Hp, int MaxHp) HpOf(Creature gremlin) =>
+        _hp.TryGetValue(gremlin, out var v) ? v : throw new ArgumentException($"Unknown gremlin {gremlin}.");
+
+   
+
+    public IEnumerable<(Creature Gremlin, int Hp, int MaxHp)> GetRotationState() =>
+        _rotation.Select(g => (g, _hp[g].Hp, _hp[g].MaxHp));
+
+    private string RotationString() =>
+        string.Join(" -> ", _rotation.Select(g => $"{g}({_hp[g].Hp}/{_hp[g].MaxHp})"));
 }

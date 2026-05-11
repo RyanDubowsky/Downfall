@@ -10,15 +10,17 @@ script = ExtResource("1_5p20n")
 preview_animation = "animation"
 unique_name_in_owner = true
 show_behind_parent = true
+position = Vector2(11, 14)
 
 [node name="Bounds" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
-offset_left = -43.0
+offset_left = -32.0
 offset_top = -150.0
-offset_right = 22.0
+offset_right = 33.0
 offset_bottom = 8.0
+pivot_offset = Vector2(34, 88)
 mouse_filter = 2
 
 [node name="CenterPos" type="Marker2D" parent="."]

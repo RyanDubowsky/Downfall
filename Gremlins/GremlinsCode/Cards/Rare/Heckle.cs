@@ -1,5 +1,6 @@
 using BaseLib.Utils;
 using Gremlins.GremlinsCode.Core;
+using Gremlins.GremlinsCode.Powers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
@@ -10,10 +11,12 @@ public class Heckle : GremlinsCardModel
 {
     public Heckle() : base(2, CardType.Power, CardRarity.Rare, TargetType.None)
     {
+        WithCostUpgradeBy(-1);
+        WithPower<HecklePower>(2);
     }
-
-    // TODO: Implement
+    
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
+        await CommonActions.ApplySelf<HecklePower>(ctx, this);
     }
 }
