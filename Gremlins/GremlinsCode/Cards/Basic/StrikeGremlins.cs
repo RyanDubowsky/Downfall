@@ -1,4 +1,5 @@
-using Baselib.Abstracts;
+
+using BaseLib.Patches.Features;
 using BaseLib.Utils;
 using Gremlins.GremlinsCode.Core;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -9,7 +10,7 @@ namespace Gremlins.GremlinsCode.Cards.Basic;
 [Pool(typeof(GremlinsCardPool))]
 public class StrikeGremlins : GremlinsCardModel
 {
-    public StrikeGremlins() : base(1, CardType.Attack, CardRarity.Basic, CustomTargetType.AllFullLifeEnemies)
+    public StrikeGremlins() : base(1, CardType.Attack, CardRarity.Basic, CustomTargetType.AnyAttackingEnemy)
     {
         WithTags(CardTag.Strike);
         WithDamage(6, 3);
