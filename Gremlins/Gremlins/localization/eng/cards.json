@@ -63,7 +63,7 @@
   "GREMLINS-GREMLIN_ARMS.title": "Gremlin Arms",
   "GREMLINS-GREMLIN_DANCE.description": "Deal {Damage:diff()} damage{GremlinVariant:choose(None|MadGremlin|SneakGremlin|ShieldGremlin|FatGremlin|WizardGremlin|GremlinNob):.\nHas a bonus effect based on which Gremlin you are.| to ALL enemies|.\nDraw {Cards:diff()} cards.|.\nGain {Block:diff()} [gold]Block[/gold].|.\nEnemy loses 2 [gold]Strength[/gold] this turn.|.\nGain 2 [gold]Wiz[/gold].|.\nGain 2 [gold]Strength[/gold].}",
   "GREMLINS-GREMLIN_DANCE.title": "Gremlin Dance",
-  "GREMLINS-GREMLIN_OFFENSIVE.description": "Deal {Damage:diff()} damage.\nAdd [gold]Gremlin Offensive{IfUpgraded:show:+|}[/gold] into your hand.",
+  "GREMLINS-GREMLIN_OFFENSIVE.description": "Deal {Damage:diff()} damage.\nAdd [gold]Gremlin Offensive{IfUpgraded:show:+|}[/gold] into your Hand.",
   "GREMLINS-GREMLIN_OFFENSIVE.title": "Gremlin Offensive",
   "GREMLINS-GREMLIN_TOSS.description": "Gain {TempHP:diff()} [gold]Temp [/gold]HP.\nDeal damage equal to your current [gold]Block[/gold] and [gold]Temp HP[/gold].",
   "GREMLINS-GREMLIN_TOSS.title": "Gremlin Toss",
