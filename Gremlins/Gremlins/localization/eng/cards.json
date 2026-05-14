@@ -17,7 +17,7 @@
   "GREMLINS-BURLY_BLOW.title": "Burly Blow",
   "GREMLINS-CAT_SCRATCH.description": "Deal {Damage:diff()} damage {Repeat:diff()} times.",
   "GREMLINS-CAT_SCRATCH.title": "Cat Scratch",
-  "GREMLINS-CHANGE_O.description": "Gain {Block:diff()} [gold]Block.[/gold]\nGain {ChangeOPower:diff()} [gold]Wiz[/gold].",
+  "GREMLINS-CHANGE_O.description": "Gain {Block:diff()} [gold]Block.[/gold]\nGain {WizPower:diff()} [gold]Wiz[/gold].",
   "GREMLINS-CHANGE_O.title": "Change-o!",
   "GREMLINS-CONGA_LINE.description": "At the start of your turn, gain {energyPrefix:energyIcons(1)} and [gold]Swap[/gold] to the next Gremlin.",
   "GREMLINS-CONGA_LINE.title": "Conga Line",
