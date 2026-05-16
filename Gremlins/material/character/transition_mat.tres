@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cuhsxeswx1qg7"]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cuhsxeswx6qg7"]
 
 [ext_resource type="Texture2D" uid="uid://bidfka3l01n0n" path="res://Gremlins/images/character/transition.png" id="1_1gsyn"]
 
