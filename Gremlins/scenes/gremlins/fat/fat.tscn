@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://r7vansx7lo70"]
+[gd_scene load_steps=4 format=3 ]
 
-[ext_resource type="SpineAtlasResource" uid="uid://db37dpjyov8es" path="res://Gremlins/scenes/gremlins/fat/fat.spatlas" id="1_auns5"]
-[ext_resource type="SpineSkeletonFileResource" uid="uid://cjifbkl34vt5f" path="res://Gremlins/scenes/gremlins/fat/fat.spskel" id="2_hi2ir"]
+[ext_resource type="SpineAtlasResource" path="res://Gremlins/scenes/gremlins/fat/fat.spatlas" id="1_auns5"]
+[ext_resource type="SpineSkeletonFileResource" path="res://Gremlins/scenes/gremlins/fat/fat.spskel" id="2_hi2ir"]
 
 [sub_resource type="SpineSkeletonDataResource" id="SpineSkeletonDataResource_py6h3"]
 atlas_res = ExtResource("1_auns5")

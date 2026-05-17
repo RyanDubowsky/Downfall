@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://biumh2uyx0gbb"]
+[gd_scene load_steps=3 format=3 ]
 
-[ext_resource type="Script" uid="uid://cln1yf0m3tcci" path="res://GremlinsCode/Vfx/NSpineCreatureVisuals.cs" id="1_5p20n"]
-[ext_resource type="PackedScene" uid="uid://nmprnicfcy3d" path="res://Gremlins/scenes/gremlins/sneak/sneak.tscn" id="5_sl2ym"]
+[ext_resource type="Script" path="res://GremlinsCode/Vfx/NSpineCreatureVisuals.cs" id="1_5p20n"]
+[ext_resource type="PackedScene" path="res://Gremlins/scenes/gremlins/sneak/sneak.tscn" id="5_sl2ym"]
 
 [node name="SneakCombat" type="Node2D"]
 script = ExtResource("1_5p20n")

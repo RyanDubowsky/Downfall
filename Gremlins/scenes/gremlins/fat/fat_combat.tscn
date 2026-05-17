@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://duurt4o4sg58b"]
+[gd_scene load_steps=3 format=3 ]
 
-[ext_resource type="Script" uid="uid://cln1yf0m3tcci" path="res://GremlinsCode/Vfx/NSpineCreatureVisuals.cs" id="1_u5ke6"]
-[ext_resource type="PackedScene" uid="uid://r7vansx7lo70" path="res://Gremlins/scenes/gremlins/fat/fat.tscn" id="6_oro81"]
+[ext_resource type="Script" path="res://GremlinsCode/Vfx/NSpineCreatureVisuals.cs" id="1_u5ke6"]
+[ext_resource type="PackedScene" path="res://Gremlins/scenes/gremlins/fat/fat.tscn" id="6_oro81"]
 
 [node name="FatCombat" type="Node2D"]
 script = ExtResource("1_u5ke6")

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dee6sutw6nbsq"]
+[gd_scene load_steps=3 format=3 ]
 
-[ext_resource type="Script" uid="uid://cln1yf0m3tcci" path="res://GremlinsCode/Vfx/NSpineCreatureVisuals.cs" id="1_m7krg"]
-[ext_resource type="PackedScene" uid="uid://dky2244g821kb" path="res://Gremlins/scenes/gremlins/wizard/wizard.tscn" id="3_8tnlq"]
+[ext_resource type="Script" path="res://GremlinsCode/Vfx/NSpineCreatureVisuals.cs" id="1_m7krg"]
+[ext_resource type="PackedScene" path="res://Gremlins/scenes/gremlins/wizard/wizard.tscn" id="3_8tnlq"]
 
 [node name="WizardCombat" type="Node2D"]
 script = ExtResource("1_m7krg")

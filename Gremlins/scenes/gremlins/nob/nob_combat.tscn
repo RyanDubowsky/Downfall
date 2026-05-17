@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://utgphx0e2lri"]
+[gd_scene load_steps=3 format=3 ]
 
-[ext_resource type="PackedScene" uid="uid://dxloutlgwrcn3" path="res://Gremlins/scenes/gremlins/nob/nob.tscn" id="1_ee1nd"]
-[ext_resource type="Script" uid="uid://cln1yf0m3tcci" path="res://GremlinsCode/Vfx/NSpineCreatureVisuals.cs" id="2_8sd0i"]
+[ext_resource type="PackedScene" path="res://Gremlins/scenes/gremlins/nob/nob.tscn" id="1_ee1nd"]
+[ext_resource type="Script" path="res://GremlinsCode/Vfx/NSpineCreatureVisuals.cs" id="2_8sd0i"]
 
 [node name="NobCombat" type="Node2D"]
 script = ExtResource("2_8sd0i")

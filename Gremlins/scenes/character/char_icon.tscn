@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1udhgwppqotl"]
+[gd_scene load_steps=2 format=3 ]
 
-[ext_resource type="Texture2D" uid="uid://cj3b5pnanswhx" path="res://Gremlins/images/character/character_icon.png" id="1_fo1a7"]
+[ext_resource type="Texture2D" path="res://Gremlins/images/character/character_icon.png" id="1_fo1a7"]
 
 
 [node name="WatcherIcon" type="TextureRect"]

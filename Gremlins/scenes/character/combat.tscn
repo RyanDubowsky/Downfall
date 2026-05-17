@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://ytayt0rrhp7e"]
+[gd_scene load_steps=2 format=3 ]
 
-[ext_resource type="Script" uid="uid://3r7urx7d8b42" path="res://GremlinsCode/Vfx/NGremlinsCreatureVisuals.cs" id="1_iua42"]
+[ext_resource type="Script" path="res://GremlinsCode/Vfx/NGremlinsCreatureVisuals.cs" id="1_iua42"]
 
 [node name="GremlinsCombat" type="Node2D"]
 script = ExtResource("1_iua42")
