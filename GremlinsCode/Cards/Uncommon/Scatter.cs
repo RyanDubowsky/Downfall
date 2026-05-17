@@ -15,7 +15,7 @@ public class Scatter : GremlinsCardModel
         WithPower<ScatterPower>(1);
         WithCostUpgradeBy(-1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<ScatterPower>(ctx, this);

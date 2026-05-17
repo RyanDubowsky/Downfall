@@ -6,5 +6,5 @@ namespace Gremlins.GremlinsCode.Events;
 
 public interface IAfterGremlinSwap
 {
-    Task AfterGremlinSwap(PlayerChoiceContext ctx, Player player, GremlinSwapType  gremlinSwapType);
+    Task AfterGremlinSwap(PlayerChoiceContext ctx, Player player, GremlinSwapType gremlinSwapType);
 }

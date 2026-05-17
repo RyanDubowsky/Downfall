@@ -14,7 +14,7 @@ public class Encore : GremlinsCardModel
         WithPower<WizPower>(3);
         WithPower<EncorePower>(4, 2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<WizPower>(ctx, this);

@@ -11,6 +11,6 @@ public class WizardryPower : GremlinsPowerModel
     {
         if (side != Owner.Side) return;
         Flash();
-        await PowerCmd.Apply<WizPower>(ctx, Owner,  Amount, Owner,  null);
+        await PowerCmd.Apply<WizPower>(ctx, Owner, Amount, Owner, null);
     }
 }

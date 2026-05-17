@@ -17,9 +17,9 @@ public class PolishPower : GremlinsPowerModel
     }
 
 
-    public override decimal ModifyBlockAdditive(Creature target, decimal block, ValueProp props, CardModel? card, CardPlay? cardPlay)
+    public override decimal ModifyBlockAdditive(Creature target, decimal block, ValueProp props, CardModel? card,
+        CardPlay? cardPlay)
     {
         return Owner != target || !props.IsPoweredAttack() || card is not Ward ? 0M : Amount;
-
     }
 }

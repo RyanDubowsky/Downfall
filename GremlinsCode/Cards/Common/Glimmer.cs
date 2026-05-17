@@ -16,7 +16,7 @@ public class Glimmer : GremlinsCardModel
         WithDamage(2, 1);
         WithCards(2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);

@@ -1,5 +1,4 @@
 using BaseLib.Utils;
-using Downfall.DownfallCode.Abstract;
 using Downfall.DownfallCode.Commands;
 using Gremlins.GremlinsCode.Cards.Token;
 using Gremlins.GremlinsCode.Core;
@@ -18,7 +17,7 @@ public class FairyDust : GremlinsCardModel
         WithTip(typeof(Ward));
         WithKeyword(CardKeyword.Exhaust);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await DownfallCardCmd.GiveCards<Ward>(Owner, PileType.Hand, DynamicVars.Cards.BaseValue);

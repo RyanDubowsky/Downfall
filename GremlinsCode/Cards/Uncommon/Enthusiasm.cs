@@ -14,7 +14,7 @@ public class Enthusiasm : GremlinsCardModel
         WithPower<EnthusiasmPower>(1);
         WithCostUpgradeBy(-1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<EnthusiasmPower>(ctx, this);

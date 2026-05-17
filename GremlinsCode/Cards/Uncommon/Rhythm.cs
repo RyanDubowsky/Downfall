@@ -14,14 +14,14 @@ public class Rhythm : GremlinsCardModel
     {
         WithCostUpgradeBy(-1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await GremlinsCmd.SwapToNext(ctx, Owner);
         var cards = Owner.PlayerCombatState?.DrawPile.Cards.Where(e => e.Rarity == CardRarity.Basic).ToList();
-        if  (cards == null) return;
+        if (cards == null) return;
         var prefs = new CardSelectorPrefs(SelectionScreenPrompt, 1);
-        var card =( await CardSelectCmd.FromSimpleGrid(ctx, cards, Owner, prefs)).ToList();
+        var card = (await CardSelectCmd.FromSimpleGrid(ctx, cards, Owner, prefs)).ToList();
         card.ForEach(e => e.EnergyCost.SetThisTurn(0));
         await CardPileCmd.Add(card, PileType.Hand);
     }

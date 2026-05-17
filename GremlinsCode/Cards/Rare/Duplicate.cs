@@ -16,10 +16,11 @@ public class Duplicate : GremlinsCardModel
         WithKeyword(CardKeyword.Exhaust, UpgradeType.Remove);
         WithCards(2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
-        var card = (await DownfallCardCmd.SelectFromHand(ctx, this, filter: e => e.Type == CardType.Attack && !e.IsEcho())).FirstOrDefault();
+        var card = (await DownfallCardCmd.SelectFromHand(ctx, this,
+            filter: e => e.Type == CardType.Attack && !e.IsEcho())).FirstOrDefault();
         if (card == null) return;
         var copies = Enumerable.Range(0, DynamicVars.Cards.IntValue)
             .Select(_ =>

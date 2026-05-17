@@ -18,12 +18,12 @@ public class IrksomeBlow : GremlinsCardModel
         WithTip(typeof(StrengthPower));
         WithDamage(5);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
     }
-    
+
     public override decimal ModifyDamageAdditive(
         Creature? target,
         decimal amount,
@@ -36,4 +36,3 @@ public class IrksomeBlow : GremlinsCardModel
             : dealer?.GetPowerAmount<StrengthPower>() * (DynamicVars["StrengthEffect"].IntValue - 1) ?? 0;
     }
 }
-

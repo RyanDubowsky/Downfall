@@ -11,16 +11,17 @@ namespace Gremlins.GremlinsCode.Powers;
 
 public class AgonyPower : GremlinsPowerModel
 {
-
     public AgonyPower() : base(PowerType.Debuff)
     {
         WithVar("DamageDecrease", 0.2M);
     }
 
-    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, 
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource)
-        => dealer != Owner || !props.IsPoweredAttack() ? 1 : DynamicVars["DamageDecrease"].BaseValue;
-   
+    {
+        return dealer != Owner || !props.IsPoweredAttack() ? 1 : DynamicVars["DamageDecrease"].BaseValue;
+    }
+
 
     public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
     {

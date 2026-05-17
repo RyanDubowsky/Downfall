@@ -7,8 +7,6 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.ValueProps;
 
 namespace Gremlins.GremlinsCode.Core;
 
@@ -24,7 +22,7 @@ public class GremlinsModel() : CustomSingletonModel(true, false)
 [HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.KillWithoutCheckingWinCondition))]
 public static class PatchGremlinDeath
 {
-    static bool Prefix(Creature creature, bool force, ref Task __result)
+    private static bool Prefix(Creature creature, bool force, ref Task __result)
     {
         if (force) return true;
         var player = creature.Player;
@@ -37,10 +35,11 @@ public static class PatchGremlinDeath
         return false;
     }
 
-    static async Task RunAsync(Player player, Creature dying)
+    private static async Task RunAsync(Player player, Creature dying)
     {
         if (player.Creature.CombatState == null || dying.Monster == null) return;
-        var hookCtx = new HookPlayerChoiceContext(dying.Monster, player.NetId, player.Creature.CombatState, GameActionType.Combat);
+        var hookCtx = new HookPlayerChoiceContext(dying.Monster, player.NetId, player.Creature.CombatState,
+            GameActionType.Combat);
         await Cmd.Wait(0.5f);
         await GremlinsCmd.KillGremlin(hookCtx, player, dying);
         dying.Monster.InvokeExecutionFinished();

@@ -14,16 +14,12 @@ public class CounterStrike : GremlinsCardModel
         WithDamage(8, 2);
         WithRepeat(2, 1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
         if (!(cardPlay.Target?.Monster?.IntendsToAttack ?? true)) return;
         var repeat = DynamicVars.Repeat.IntValue;
-        for (var i = 0; i < repeat; i++)
-        {
-            await GremlinsCmd.TriggerGremlinBonus(ctx, Owner);
-        }
-      
+        for (var i = 0; i < repeat; i++) await GremlinsCmd.TriggerGremlinBonus(ctx, Owner);
     }
 }

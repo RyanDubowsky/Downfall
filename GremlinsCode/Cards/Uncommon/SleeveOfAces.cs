@@ -16,7 +16,7 @@ public class SleeveOfAces : GremlinsCardModel
         WithDamage(4, 1);
         WithUpgradingCardTip<Shiv>();
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);

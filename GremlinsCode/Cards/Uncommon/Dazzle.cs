@@ -1,6 +1,5 @@
 using BaseLib.Utils;
 using Downfall.DownfallCode.Commands;
-using Gremlins.GremlinsCode.Cards.Token;
 using Gremlins.GremlinsCode.Core;
 using Gremlins.GremlinsCode.Powers;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -18,11 +17,11 @@ public class Dazzle : GremlinsCardModel
         WithPower<StrengthPower>(2);
         WithKeyword(CardKeyword.Exhaust);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
         if (Owner.Creature.GetPowerAmount<WizPower>() < 3) return;
-        await DownfallCmd.Steal<StrengthPower>(ctx, cardPlay, this);    
+        await DownfallCmd.Steal<StrengthPower>(ctx, cardPlay, this);
     }
 }

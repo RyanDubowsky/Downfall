@@ -11,6 +11,8 @@ public abstract class GremlinsCardModel(
     TargetType targetType)
     : DownfallCardModel<Core.Gremlins>(cost, type, rarity, targetType)
 {
+    public virtual bool IgnoreWiz => false;
+
     protected virtual async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await Task.CompletedTask;
@@ -20,6 +22,4 @@ public abstract class GremlinsCardModel(
     {
         await PlayEffect(ctx, cardPlay);
     }
-
-    public virtual bool IgnoreWiz => false;
 }

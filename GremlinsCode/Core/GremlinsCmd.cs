@@ -12,24 +12,26 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Screens.Overlays;
-using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Runs;
 
 namespace Gremlins.GremlinsCode.Core;
 
 public static class GremlinsCmd
 {
-    private static async Task SwitchGremlin(PlayerChoiceContext ctx, Player player, Creature gremlin, GremlinSwapType  gremlinSwapType)
+    private static readonly LocString NoGremlinSwap = new("combat_messages", "NO_GREMLIN_SWAP");
+
+    private static async Task SwitchGremlin(PlayerChoiceContext ctx, Player player, Creature gremlin,
+        GremlinSwapType gremlinSwapType)
     {
         if (player.Creature.CombatState == null) return;
         var state = GremlinsRunModel.GetState(player);
-        var node  = NCombatRoom.Instance?.GetCreatureNode(player.Creature);
+        var node = NCombatRoom.Instance?.GetCreatureNode(player.Creature);
         if (node?.Visuals is NGremlinsCreatureVisuals visuals)
             visuals.SwitchToGremlin(gremlin, state.Bench.Prepend(gremlin));
         await GremlinsHook.AfterGremlinSwap(player.Creature.CombatState, ctx, player, gremlinSwapType);
     }
-    
-    
+
+
     public static async Task KillGremlin(PlayerChoiceContext ctx, Player player, Creature gremlin)
     {
         var state = GremlinsRunModel.GetState(player);
@@ -41,10 +43,12 @@ public static class GremlinsCmd
         if (node?.Visuals is NGremlinsCreatureVisuals)
             NGremlinsCreatureVisuals.KillGremlin(gremlin);
     }
-    
 
-    public static Creature? GetCurrentGremlin(Player? player) =>
-        player == null ? null : GremlinsRunModel.GetState(player).Active;
+
+    public static Creature? GetCurrentGremlin(Player? player)
+    {
+        return player == null ? null : GremlinsRunModel.GetState(player).Active;
+    }
 
     private static async Task<Creature?> SelectGremlin(PlayerChoiceContext ctx, Player player)
     {
@@ -114,7 +118,7 @@ public static class GremlinsCmd
         if (bench.Count == 0) return;
         await Swap(ctx, player, bench[player.RunState.Rng.Niche.NextInt(bench.Count)]);
     }
-    
+
 
     public static int GetLivingGremlinCount(Player player)
     {
@@ -130,8 +134,8 @@ public static class GremlinsCmd
             .ToList();
         if (dead.Count == 0) return null;
 
-        var model   = dead[player.RunState.Rng.Niche.NextInt(dead.Count)];
-        var maxHp   = Math.Max(model.MaxInitialHp, hp);
+        var model = dead[player.RunState.Rng.Niche.NextInt(dead.Count)];
+        var maxHp = Math.Max(model.MaxInitialHp, hp);
         AddGremlin(player, model, hp, maxHp);
         var creature = state.Gremlins[^1];
         var node = NCombatRoom.Instance?.GetCreatureNode(player.Creature);
@@ -139,7 +143,6 @@ public static class GremlinsCmd
             visuals.ReviveGremlin(creature);
         return creature;
     }
-    private static readonly LocString NoGremlinSwap = new("combat_messages", "NO_GREMLIN_SWAP");
 
     private static async Task Swap(PlayerChoiceContext ctx, Player player, Creature target)
     {
@@ -148,6 +151,7 @@ public static class GremlinsCmd
             if (LocalContext.IsMe(player)) ThinkCmd.Play(NoGremlinSwap, player.Creature, 2.0);
             return;
         }
+
         var state = GremlinsRunModel.GetState(player);
         // write current HP back to the outgoing gremlin before swapping
         var active = state.Active;
@@ -156,10 +160,11 @@ public static class GremlinsCmd
             active.SetCurrentHpInternal(player.Creature.CurrentHp);
             active.SetMaxHpInternal(player.Creature.MaxHp);
         }
+
         state.SwapTo(target);
         await ApplySwap(ctx, player, state, target, GremlinSwapType.Move);
     }
-    
+
     // GremlinsCmd
     public static void AddGremlin(Player player, MonsterModel model, int hp, int maxHp)
     {
@@ -167,22 +172,22 @@ public static class GremlinsCmd
         if (combatState == null) return;
         if (player.PlayerCombatState == null) return;
 
-        var state    = GremlinsRunModel.GetState(player);
-        var mutable  = model.ToMutable();
+        var state = GremlinsRunModel.GetState(player);
+        var mutable = model.ToMutable();
         var creature = combatState.CreateCreature(mutable, CombatSide.Player, null);
         mutable.SetUpForCombat();
-        creature.PetOwner  = player;
-        creature.MaxHp     = maxHp;
+        creature.PetOwner = player;
+        creature.MaxHp = maxHp;
         creature.CurrentHp = hp;
         player.PlayerCombatState.AddPetInternal(creature);
         state.Register(creature);
         NCombatRoom.Instance!.AddCreature(creature);
-    
+
         var creatureNode = NCombatRoom.Instance.GetCreatureNode(player.Creature);
         if (creatureNode?.Visuals is NGremlinsCreatureVisuals visuals)
             visuals.ArrangeGremlins(state.Gremlins);
     }
-    
+
     public static async Task TriggerGremlinBonus(PlayerChoiceContext ctx, Player player)
     {
         var gremlin = GetCurrentGremlin(player);
@@ -190,7 +195,8 @@ public static class GremlinsCmd
         await monster.TriggerGremlinBonus(ctx, player);
     }
 
-    private static async Task ApplySwap(PlayerChoiceContext ctx, Player player, GremlinState state, Creature target, GremlinSwapType swapType)
+    private static async Task ApplySwap(PlayerChoiceContext ctx, Player player, GremlinState state, Creature target,
+        GremlinSwapType swapType)
     {
         await SwitchGremlin(ctx, player, target, swapType);
         player.Creature.SetMaxHpInternal(target.MaxHp);

@@ -20,8 +20,10 @@ public class Stupend : GremlinsCardModel
     }
 
     private static decimal Calc(CardModel card, Creature? creature)
-        => card.Owner.Creature.GetPowerAmount<BangPower>();
-    
+    {
+        return card.Owner.Creature.GetPowerAmount<BangPower>();
+    }
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await MyCommonActions.CardCalculatedBlock(this, cardPlay);

@@ -20,8 +20,10 @@ public class Bellow : GremlinsCardModel
     }
 
     private static decimal Calc(CardModel card, Creature? _)
-        => card.CombatState?.HittableEnemies.Count(e => !e.Monster?.IntendsToAttack ?? false) ?? 0;
-    
+    {
+        return card.CombatState?.HittableEnemies.Count(e => !e.Monster?.IntendsToAttack ?? false) ?? 0;
+    }
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         var strength = ((CalculatedVar)DynamicVars["Strength"]).Calculate(null);

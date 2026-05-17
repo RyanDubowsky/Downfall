@@ -1,20 +1,17 @@
-﻿using System.Text.Json.Serialization;
-using Downfall.DownfallCode.Saves;
+﻿using Downfall.DownfallCode.Saves;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Logging;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Multiplayer.Serialization;
 
 namespace Gremlins.GremlinsCode.Core;
 
 public class GremlinState
 {
     private static readonly Logger Log = GremlinsMainFile.Logger;
+    private readonly List<Creature> _gremlins = [];
 
     private readonly LinkedList<Creature> _rotation = [];
-    private readonly List<Creature> _gremlins = [];
-    
+
     public Creature? Next => _rotation.First?.Next?.Value;
     public IReadOnlyList<Creature> Gremlins => _gremlins;
     public Creature? Active => _rotation.First?.Value;
@@ -51,13 +48,16 @@ public class GremlinState
         _rotation.Clear();
         _gremlins.Clear();
     }
-    
-    public List<GremlinSaveData> ToSaveData(Player player) => _rotation
-        .Where(g => g.Monster is GremlinsMonsterModel { ShouldSave: true })
-        .Select(g => new GremlinSaveData
-        {
-            ModelId = g.Monster!.Id,
-            Hp      = g == Active ? player.Creature.CurrentHp : g.CurrentHp,
-            MaxHp   = g == Active ? player.Creature.MaxHp : g.MaxHp,
-        }).ToList();
+
+    public List<GremlinSaveData> ToSaveData(Player player)
+    {
+        return _rotation
+            .Where(g => g.Monster is GremlinsMonsterModel { ShouldSave: true })
+            .Select(g => new GremlinSaveData
+            {
+                ModelId = g.Monster!.Id,
+                Hp = g == Active ? player.Creature.CurrentHp : g.CurrentHp,
+                MaxHp = g == Active ? player.Creature.MaxHp : g.MaxHp
+            }).ToList();
+    }
 }

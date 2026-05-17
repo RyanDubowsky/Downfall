@@ -17,7 +17,7 @@ public class ShankStone : GremlinsCardModel
         WithKeyword(CardKeyword.Unplayable);
         WithTip(typeof(Shiv));
     }
-    
+
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
         if (card != this) return;

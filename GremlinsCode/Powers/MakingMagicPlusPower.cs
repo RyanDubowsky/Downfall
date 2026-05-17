@@ -10,13 +10,12 @@ namespace Gremlins.GremlinsCode.Powers;
 
 public class MakingMagicPlusPower : GremlinsPowerModel
 {
-    
     public MakingMagicPlusPower()
     {
         WithUpgradedCardTip<Bang>();
     }
 
-    
+
     public override async Task BeforeHandDraw(Player player, PlayerChoiceContext ctx, ICombatState combatState)
     {
         if (player.Creature != Owner) return;

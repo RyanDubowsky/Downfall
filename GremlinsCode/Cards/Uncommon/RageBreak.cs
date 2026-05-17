@@ -14,16 +14,16 @@ public class RageBreak : GremlinsCardModel
     {
         WithTip(typeof(PossessStrengthPower));
         WithKeyword(CardKeyword.Exhaust);
-        WithBlock(0,5);
+        WithBlock(0, 5);
     }
-    
+
     public override bool GainsBlock => IsUpgraded;
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         var powerAmount = Owner.Creature.GetPowerAmount<StrengthPower>();
         if (powerAmount <= 0) return;
-       await PowerCmd.Apply<StrengthPower>(ctx, Owner.Creature, powerAmount, 
-           Owner.Creature,  this);
-
+        await PowerCmd.Apply<StrengthPower>(ctx, Owner.Creature, powerAmount,
+            Owner.Creature, this);
     }
 }

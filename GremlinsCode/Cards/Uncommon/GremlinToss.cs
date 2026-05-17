@@ -1,7 +1,6 @@
 using BaseLib.Utils;
 using Downfall.DownfallCode.Commands;
 using Gremlins.GremlinsCode.Core;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -20,9 +19,11 @@ public class GremlinToss : GremlinsCardModel
     }
 
     private static decimal Calc(CardModel card, Creature? arg2)
-         => DownfallCmd.GetTempHpAmount(card.Owner.Creature) + card.Owner.Creature.Block;
-    
-    
+    {
+        return DownfallCmd.GetTempHpAmount(card.Owner.Creature) + card.Owner.Creature.Block;
+    }
+
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await DownfallCmd.GainTempHp(ctx, this);

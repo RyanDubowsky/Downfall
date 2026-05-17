@@ -16,7 +16,7 @@ public class EdibleArmor : GremlinsCardModel
         WithTip(StaticHoverTip.Block);
         WithKeyword(CardKeyword.Exhaust);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         var block = Owner.Creature.Block;

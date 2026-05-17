@@ -14,7 +14,7 @@ public class Presto : GremlinsCardModel
         WithDamage(9, 2);
         WithPower<WizPower>(1, 1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);

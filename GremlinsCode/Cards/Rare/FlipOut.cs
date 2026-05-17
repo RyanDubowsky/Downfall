@@ -14,7 +14,7 @@ public class FlipOut : GremlinsCardModel
         WithDamage(11, 4);
         WithPower<FuriousPower>(1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);

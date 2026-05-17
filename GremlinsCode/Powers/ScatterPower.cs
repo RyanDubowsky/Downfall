@@ -9,7 +9,7 @@ namespace Gremlins.GremlinsCode.Powers;
 
 public class ScatterPower : GremlinsPowerModel
 {
-    public override Decimal ModifyHpLostAfterOstyLate(
+    public override decimal ModifyHpLostAfterOstyLate(
         Creature target,
         decimal amount,
         ValueProp props,
@@ -25,5 +25,4 @@ public class ScatterPower : GremlinsPowerModel
         await GremlinsCmd.SwapToRandom(ctx, Owner.Player);
         await PowerCmd.Decrement(this);
     }
-
 }

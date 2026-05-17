@@ -18,18 +18,14 @@ public class ProperTools : GremlinsCardModel
         WithTip(typeof(Shiv));
         WithTip(typeof(Ward));
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
         if (cardPlay.Target?.Monster == null) return;
         if (cardPlay.Target.Monster.IntendsToAttack)
-        {
             await DownfallCardCmd.GiveCards<Ward>(Owner, PileType.Hand, DynamicVars.Cards.IntValue);
-        }
         else
-        {
             await DownfallCardCmd.GiveCards<Shiv>(Owner, PileType.Hand, DynamicVars.Cards.IntValue);
-        }
     }
 }

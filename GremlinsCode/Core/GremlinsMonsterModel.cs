@@ -4,7 +4,6 @@ using Gremlins.GremlinsCode.Powers;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Extensions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -26,6 +25,8 @@ public abstract class GremlinsMonsterModel : CustomMonsterModel
     public override int MinInitialHp => 16;
     public override int MaxInitialHp => 16;
 
+    public virtual bool ShouldSave => true;
+
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
         var initialState = new MoveState("NOTHING_MOVE", _ => Task.CompletedTask);
@@ -39,10 +40,9 @@ public abstract class GremlinsMonsterModel : CustomMonsterModel
     }
 
     public virtual Task TriggerGremlinBonus(PlayerChoiceContext ctx, Player player)
-        => Task.CompletedTask;
-
-    public virtual bool ShouldSave => true;
-
+    {
+        return Task.CompletedTask;
+    }
 }
 
 public class MadGremlin : GremlinsMonsterModel
@@ -64,20 +64,20 @@ public class ShieldGremlin : GremlinsMonsterModel
 
     public override string CustomVisualPath =>
         "res://Gremlins/scenes/gremlins/shield/shield_combat.tscn";
-    
+
     public override async Task TriggerGremlinBonus(PlayerChoiceContext ctx, Player player)
     {
         await CreatureCmd.GainBlock(player.Creature, 2, ValueProp.Unpowered, null);
     }
-    
 }
 
 public class FatGremlin : GremlinsMonsterModel
 {
     protected override string IdleAnimationName => "animation";
-    public override string CustomVisualPath => 
+
+    public override string CustomVisualPath =>
         "res://Gremlins/scenes/gremlins/fat/fat_combat.tscn";
-    
+
     public override async Task TriggerGremlinBonus(PlayerChoiceContext ctx, Player player)
     {
         var combatState = player.Creature.CombatState;
@@ -92,12 +92,13 @@ public class SneakGremlin : GremlinsMonsterModel
 
     public override string CustomVisualPath =>
         "res://Gremlins/scenes/gremlins/sneak/sneak_combat.tscn";
-    
-  
+
+
     public override async Task TriggerGremlinBonus(PlayerChoiceContext ctx, Player player)
     {
         var combatState = player.Creature.CombatState;
-        var randomEnemy = combatState?.HittableEnemies.TakeRandom(1, combatState.RunState.Rng.CombatTargets).FirstOrDefault();
+        var randomEnemy = combatState?.HittableEnemies.TakeRandom(1, combatState.RunState.Rng.CombatTargets)
+            .FirstOrDefault();
         if (randomEnemy == null) return;
         await CreatureCmd.Damage(ctx, randomEnemy, 2, ValueProp.Unpowered, player.Creature);
     }
@@ -109,13 +110,12 @@ public class WizardGremlin : GremlinsMonsterModel
 
     public override string CustomVisualPath =>
         "res://Gremlins/scenes/gremlins/wizard/wizard_combat.tscn";
-    
+
     public override async Task TriggerGremlinBonus(PlayerChoiceContext ctx, Player player)
     {
         await PowerCmd.Apply<WizPower>(ctx, player.Creature, 1, player.Creature, null);
     }
 }
-
 
 public class GremlinNob : GremlinsMonsterModel
 {

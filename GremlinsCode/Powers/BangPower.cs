@@ -11,14 +11,19 @@ namespace Gremlins.GremlinsCode.Powers;
 
 public class BangPower : GremlinsPowerModel
 {
-    protected override object InitInternalData() => new Data();
+    protected override object InitInternalData()
+    {
+        return new Data();
+    }
 
     public override Task BeforeAttack(AttackCommand command)
     {
         if (command.Attacker != Owner || !command.DamageProps.IsPoweredAttack())
             return Task.CompletedTask;
         var internalData = GetInternalData<Data>();
-        if (internalData.CommandToModify != null || command.ModelSource != null && command.ModelSource is not CardModel || !command.DamageProps.IsPoweredAttack())
+        if (internalData.CommandToModify != null ||
+            (command.ModelSource != null && command.ModelSource is not CardModel) ||
+            !command.DamageProps.IsPoweredAttack())
             return Task.CompletedTask;
         internalData.CommandToModify = command;
         internalData.AmountWhenAttackStarted = Amount;
@@ -35,7 +40,11 @@ public class BangPower : GremlinsPowerModel
         if (Owner != dealer || !props.IsPoweredAttack())
             return 0M;
         var internalData = GetInternalData<Data>();
-        return internalData.CommandToModify != null && cardSource != null && cardSource != internalData.CommandToModify.ModelSource || internalData.CommandToModify != null && internalData.CommandToModify.Attacker != dealer ? 0M : Amount;
+        return (internalData.CommandToModify != null && cardSource != null &&
+                cardSource != internalData.CommandToModify.ModelSource) ||
+               (internalData.CommandToModify != null && internalData.CommandToModify.Attacker != dealer)
+            ? 0M
+            : Amount;
     }
 
     public override async Task AfterAttack(PlayerChoiceContext ctx, AttackCommand command)
@@ -47,14 +56,16 @@ public class BangPower : GremlinsPowerModel
         {
             internalData.CommandToModify = null;
             return;
-        };
-        await PowerCmd.ModifyAmount(ctx, this,  -internalData.AmountWhenAttackStarted, null,  null);
+        }
+
+        ;
+        await PowerCmd.ModifyAmount(ctx, this, -internalData.AmountWhenAttackStarted, null, null);
         await PowerCmd.Remove<WizPower>(Owner);
     }
 
     private class Data
     {
-        public AttackCommand? CommandToModify;
         public int AmountWhenAttackStarted;
+        public AttackCommand? CommandToModify;
     }
 }

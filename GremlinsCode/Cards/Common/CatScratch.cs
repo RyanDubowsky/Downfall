@@ -13,7 +13,7 @@ public class CatScratch : GremlinsCardModel
         WithDamage(2);
         WithRepeat(3, 1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay, DynamicVars.Repeat.IntValue).Execute(ctx);

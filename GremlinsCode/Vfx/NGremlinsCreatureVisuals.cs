@@ -8,13 +8,17 @@ namespace Gremlins.GremlinsCode.Vfx;
 [GlobalClass]
 public partial class NGremlinsCreatureVisuals : NCreatureVisuals
 {
-    private List<Creature> _gremlins = [];
     private Creature? _activeGremlin;
+    private List<Creature> _gremlins = [];
+
+    private NCreature? _playerNode;
+
+    private List<Creature> _rotation = [];
 
     public void ArrangeGremlins(IReadOnlyList<Creature> gremlins)
     {
-        _gremlins  = gremlins.ToList();
-        _rotation  = _gremlins.ToList();
+        _gremlins = gremlins.ToList();
+        _rotation = _gremlins.ToList();
         _activeGremlin = _gremlins.FirstOrDefault();
         ApplySlotPositions(false);
         foreach (var node in _gremlins.Select(g => NCombatRoom.Instance?.GetCreatureNode(g)))
@@ -52,8 +56,6 @@ public partial class NGremlinsCreatureVisuals : NCreatureVisuals
             ?.HpBarContainer.Show();
     }
 
-    private List<Creature> _rotation = [];
-
     public void SwitchToGremlin(Creature gremlin, IEnumerable<Creature> rotation)
     {
         if (!_gremlins.Contains(gremlin)) return;
@@ -79,12 +81,10 @@ public partial class NGremlinsCreatureVisuals : NCreatureVisuals
         tween.Chain().TweenCallback(Callable.From(() => node.Visible = false));
     }
 
-    private NCreature? _playerNode;
-    
     public override void _Ready()
     {
         base._Ready();
-        _playerNode = GetParentOrNull<NCreature>() 
+        _playerNode = GetParentOrNull<NCreature>()
                       ?? GetParent()?.GetParentOrNull<NCreature>();
     }
 
@@ -99,13 +99,20 @@ public partial class NGremlinsCreatureVisuals : NCreatureVisuals
         stateDisplay?.SetCreatureBounds(_playerNode.Hitbox);
     }
 
-    private int GetSlot(Creature gremlin) => _rotation.IndexOf(gremlin);
+    private int GetSlot(Creature gremlin)
+    {
+        return _rotation.IndexOf(gremlin);
+    }
 
-    private static Vector2 GetSlotOffset(int slot) =>
-        slot == 0 ? Vector2.Zero : new Vector2(-120f - (slot - 1) * 60f, 0f);
+    private static Vector2 GetSlotOffset(int slot)
+    {
+        return slot == 0 ? Vector2.Zero : new Vector2(-120f - (slot - 1) * 60f, 0f);
+    }
 
-    private static float GetSlotScale(int slot) =>
-        slot == 0 ? 1f : 0.6f;
+    private static float GetSlotScale(int slot)
+    {
+        return slot == 0 ? 1f : 0.6f;
+    }
 
     private void ApplySlotPositions(bool animated)
     {
@@ -117,7 +124,7 @@ public partial class NGremlinsCreatureVisuals : NCreatureVisuals
             var node = NCombatRoom.Instance?.GetCreatureNode(living[slot]);
             if (node == null) continue;
 
-            var targetPos   = anchor + GetSlotOffset(slot);
+            var targetPos = anchor + GetSlotOffset(slot);
             var targetScale = Vector2.One * GetSlotScale(slot);
             node.ZIndex = living.Count - slot;
 
@@ -135,7 +142,7 @@ public partial class NGremlinsCreatureVisuals : NCreatureVisuals
             else
             {
                 node.GlobalPosition = targetPos;
-                node.Scale          = targetScale;
+                node.Scale = targetScale;
             }
         }
     }

@@ -15,7 +15,7 @@ public class MakeshiftArmor : GremlinsCardModel
         WithPower<ArtifactPower>(0, 1);
         WithPower<MakeshiftArmorPower>(1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<ArtifactPower>(ctx, this);

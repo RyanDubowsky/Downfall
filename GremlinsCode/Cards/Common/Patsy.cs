@@ -12,11 +12,10 @@ public class Patsy : GremlinsCardModel
     {
         WithBlock(4, 2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardBlock(this, cardPlay);
         await GremlinsCmd.SwapToNext(ctx, Owner);
-
     }
 }

@@ -12,6 +12,8 @@ namespace Gremlins.GremlinsCode.Cards.Uncommon;
 [Pool(typeof(GremlinsCardPool))]
 public class Fury : GremlinsCardModel
 {
+    private int _lastReduction;
+
     public Fury() : base(3, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
         WithDamage(5, 2);
@@ -24,8 +26,6 @@ public class Fury : GremlinsCardModel
     {
         await CommonActions.CardAttack(this, cardPlay, DynamicVars.Repeat.IntValue).Execute(ctx);
     }
-    
-    private int _lastReduction;
 
     private void RecalculateCostReduction()
     {
@@ -44,7 +44,8 @@ public class Fury : GremlinsCardModel
         return Task.CompletedTask;
     }
 
-    public override Task AfterPowerAmountChanged(PlayerChoiceContext ctx, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
+    public override Task AfterPowerAmountChanged(PlayerChoiceContext ctx, PowerModel power, decimal amount,
+        Creature? applier, CardModel? cardSource)
     {
         if (power.Owner != Owner.Creature || power is not StrengthPower) return Task.CompletedTask;
         RecalculateCostReduction();

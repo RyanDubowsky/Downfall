@@ -18,11 +18,11 @@ public class Astound : GremlinsCardModel
         WithTip(typeof(WizPower));
         WithCards(2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardBlock(this, cardPlay);
         if (Owner.Creature.GetPowerAmount<WizPower>() < 3) return;
-        await DownfallCardCmd.GiveCards<Ward>(Owner, PileType.Hand, DynamicVars.Cards.IntValue,  upgraded: IsUpgraded);
+        await DownfallCardCmd.GiveCards<Ward>(Owner, PileType.Hand, DynamicVars.Cards.IntValue, upgraded: IsUpgraded);
     }
 }

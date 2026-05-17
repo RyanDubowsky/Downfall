@@ -9,11 +9,10 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace Gremlins.GremlinsCode.Powers;
 
-
 public class FuriousPower() : GremlinsPowerModel(PowerType.Buff, PowerStackType.Single)
 {
-
-    protected override async Task AfterBlockGained(PlayerChoiceContext ctx, Creature creature, decimal amount, ValueProp props,
+    protected override async Task AfterBlockGained(PlayerChoiceContext ctx, Creature creature, decimal amount,
+        ValueProp props,
         CardModel? cardSource)
     {
         if (creature != Owner || amount <= 0 || Owner.Player == null) return;

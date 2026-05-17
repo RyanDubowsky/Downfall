@@ -15,7 +15,7 @@
         <None Include="GremlinsCode/**"/>
         <Compile Include="GremlinsCode/**/*.cs"/>
     </ItemGroup>
-    
+
     <ItemGroup>
         <ProjectReference Include="Downfall.csproj"/>
     </ItemGroup>

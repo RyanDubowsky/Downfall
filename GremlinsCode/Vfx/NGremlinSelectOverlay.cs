@@ -2,24 +2,54 @@
 using MegaCrit.Sts2.Core.ControllerInput;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Multiplayer;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Screens.Overlays;
-using MegaCrit.Sts2.Core.Nodes.Screens.ScreenContext;
 
 namespace Gremlins.GremlinsCode.Vfx;
 
 public partial class NGremlinSelectOverlay : Control, IOverlayScreen
 {
-    private List<Creature> _gremlins = [];
-    private readonly TaskCompletionSource<int> _tcs = new();
     private readonly List<(NCreature node, Node originalParent, int originalIndex)> _gremlinNodes = [];
-    private int _controllerIndex = 0;
+    private readonly TaskCompletionSource<int> _tcs = new();
+    private int _controllerIndex;
+    private List<Creature> _gremlins = [];
 
     public Control? DefaultFocusedControl => null;
     public NetScreenType ScreenType => NetScreenType.None;
     public bool UseSharedBackstop => false;
+
+    public void AfterOverlayClosed()
+    {
+        foreach (var (node, originalParent, originalIndex) in _gremlinNodes)
+        {
+            if (!IsInstanceValid(node) || !IsInstanceValid(originalParent)) continue;
+            var globalPos = node.GlobalPosition;
+            RemoveChild(node);
+            originalParent.AddChild(node);
+            originalParent.MoveChild(node, originalIndex);
+            node.GlobalPosition = globalPos;
+            node.Scale = Vector2.One; // reset scale
+        }
+
+        QueueFree();
+    }
+
+    public void AfterOverlayOpened()
+    {
+        Modulate = Colors.Transparent;
+        CreateTween().TweenProperty(this, "modulate:a", 1f, 0.2);
+    }
+
+    public void AfterOverlayShown()
+    {
+        Visible = true;
+    }
+
+    public void AfterOverlayHidden()
+    {
+        Visible = false;
+    }
 
     public static NGremlinSelectOverlay Create(List<Creature> gremlins)
     {
@@ -40,7 +70,7 @@ public partial class NGremlinSelectOverlay : Control, IOverlayScreen
             Color = new Color(0, 0, 0, 0.6f),
             Size = viewportSize,
             Position = Vector2.Zero,
-            MouseFilter = MouseFilterEnum.Stop,
+            MouseFilter = MouseFilterEnum.Stop
         };
         AddChild(dim);
 
@@ -50,8 +80,8 @@ public partial class NGremlinSelectOverlay : Control, IOverlayScreen
             if (node == null) continue;
 
             var originalParent = node.GetParent();
-            var originalIndex  = node.GetIndex();
-            var globalPos      = node.GlobalPosition;
+            var originalIndex = node.GetIndex();
+            var globalPos = node.GlobalPosition;
 
             originalParent.RemoveChild(node);
             AddChild(node);
@@ -63,10 +93,10 @@ public partial class NGremlinSelectOverlay : Control, IOverlayScreen
             var btn = new Button
             {
                 Flat = true,
-                Size           = node.Hitbox.Size,
+                Size = node.Hitbox.Size,
                 GlobalPosition = node.Hitbox.GlobalPosition,
-                Modulate       = Colors.Transparent,
-                MouseFilter    = MouseFilterEnum.Stop,
+                Modulate = Colors.Transparent,
+                MouseFilter = MouseFilterEnum.Stop
             };
             AddChild(btn);
             btn.Pressed += () => _tcs.TrySetResult(captured);
@@ -95,7 +125,6 @@ public partial class NGremlinSelectOverlay : Control, IOverlayScreen
         {
             GetViewport().SetInputAsHandled();
             _tcs.TrySetResult(_controllerIndex);
-            return;
         }
     }
 
@@ -109,29 +138,8 @@ public partial class NGremlinSelectOverlay : Control, IOverlayScreen
         }
     }
 
-    public void AfterOverlayClosed()
+    public Task<int> AwaitSelection()
     {
-        foreach (var (node, originalParent, originalIndex) in _gremlinNodes)
-        {
-            if (!IsInstanceValid(node) || !IsInstanceValid(originalParent)) continue;
-            var globalPos = node.GlobalPosition;
-            RemoveChild(node);
-            originalParent.AddChild(node);
-            originalParent.MoveChild(node, originalIndex);
-            node.GlobalPosition = globalPos;
-            node.Scale = Vector2.One; // reset scale
-        }
-        QueueFree();
+        return _tcs.Task;
     }
-
-    public Task<int> AwaitSelection() => _tcs.Task;
-
-    public void AfterOverlayOpened()
-    {
-        Modulate = Colors.Transparent;
-        CreateTween().TweenProperty(this, "modulate:a", 1f, 0.2);
-    }
-
-    public void AfterOverlayShown() => Visible = true;
-    public void AfterOverlayHidden() => Visible = false;
 }

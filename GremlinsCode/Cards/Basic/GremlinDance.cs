@@ -1,6 +1,5 @@
 using BaseLib.Utils;
 using Downfall.DownfallCode.Powers;
-
 using Gremlins.GremlinsCode.Core;
 using Gremlins.GremlinsCode.Powers;
 using MegaCrit.Sts2.Core.Commands;
@@ -16,8 +15,6 @@ namespace Gremlins.GremlinsCode.Cards.Basic;
 [Pool(typeof(GremlinsCardPool))]
 public class GremlinDance : GremlinsCardModel
 {
-
-
     public GremlinDance() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
     {
         WithDamage(6, 3);
@@ -28,10 +25,10 @@ public class GremlinDance : GremlinsCardModel
             return GremlinsCmd.GetCurrentGremlin(card._owner)?.Monster switch
             {
                 ShieldGremlin => [HoverTipFactory.Static(StaticHoverTip.Block)],
-                FatGremlin    => [HoverTipFactory.FromPower<TemporaryStrengthDownPower>()],
+                FatGremlin => [HoverTipFactory.FromPower<TemporaryStrengthDownPower>()],
                 WizardGremlin => [HoverTipFactory.FromPower<WizPower>()],
-                GremlinNob    => [HoverTipFactory.FromPower<StrengthPower>()],
-                _             => []
+                GremlinNob => [HoverTipFactory.FromPower<StrengthPower>()],
+                _ => []
             };
         });
     }
@@ -40,14 +37,17 @@ public class GremlinDance : GremlinsCardModel
         IsMutable ? GremlinsCmd.GetCurrentGremlin(_owner)?.Monster : null;
 
     public override bool GainsBlock => CurrentGremlinMonster is ShieldGremlin;
-    public override TargetType TargetType => CurrentGremlinMonster is not MadGremlin ? TargetType.AnyEnemy : TargetType.AllEnemies;
+
+    public override TargetType TargetType =>
+        CurrentGremlinMonster is not MadGremlin ? TargetType.AnyEnemy : TargetType.AllEnemies;
+
     private string GremlinName => CurrentGremlinMonster?.GetType().Name ?? "None";
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         var current = GremlinsCmd.GetCurrentGremlin(Owner);
         if (current?.Monster is not GremlinsMonsterModel gremlin) return;
-        
+
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
         switch (gremlin)
         {
@@ -67,7 +67,6 @@ public class GremlinDance : GremlinsCardModel
             case GremlinNob:
                 await PowerCmd.Apply<StrengthPower>(ctx, Owner.Creature, 2, Owner.Creature, this);
                 break;
-            
         }
     }
 
@@ -77,5 +76,4 @@ public class GremlinDance : GremlinsCardModel
         base.AddExtraArgsToDescription(description);
         description.Add("GremlinVariant", GremlinName);
     }
-
 }

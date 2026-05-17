@@ -14,7 +14,7 @@ public class Irritability : GremlinsCardModel
         WithBlock(6, 2);
         WithPower<TemporaryThornsPower>(3, 2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardBlock(this, cardPlay);

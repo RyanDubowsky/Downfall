@@ -19,8 +19,19 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace Gremlins.GremlinsCode.Powers;
 
-public class GremlinPower(): GremlinsPowerModel(PowerType.Buff, PowerStackType.Single), IAddDumbVariablesToPowerDescription
+public class GremlinPower()
+    : GremlinsPowerModel(PowerType.Buff, PowerStackType.Single), IAddDumbVariablesToPowerDescription
 {
+    private MonsterModel? CurrentGremlinMonster =>
+        IsMutable ? GremlinsCmd.GetCurrentGremlin(Owner.Player)?.Monster : null;
+
+    private string GremlinName => CurrentGremlinMonster?.GetType().Name ?? "None";
+
+    public void AddDumbVariablesToPowerDescription(LocString description)
+    {
+        description.Add("GremlinVariant", GremlinName);
+    }
+
     public override async Task BeforeHandDraw(Player player, PlayerChoiceContext ctx, ICombatState combatState)
     {
         if (Owner != player.Creature) return;
@@ -40,7 +51,7 @@ public class GremlinPower(): GremlinsPowerModel(PowerType.Buff, PowerStackType.S
         var gremlin = GremlinsCmd.GetCurrentGremlin(player);
         if (gremlin?.Monster is not GremlinsMonsterModel monster) return;
         var combatState = cardPlay.Card.CombatState;
-        if(combatState == null) return;
+        if (combatState == null) return;
         switch (monster)
         {
             case MadGremlin:
@@ -59,7 +70,8 @@ public class GremlinPower(): GremlinsPowerModel(PowerType.Buff, PowerStackType.S
                 break;
             case SneakGremlin:
                 if (cardPlay.Card.Type != CardType.Attack) return;
-                var randomEnemy = (combatState.HittableEnemies.TakeRandom(1, combatState.RunState.Rng.CombatTargets)).FirstOrDefault();
+                var randomEnemy = combatState.HittableEnemies.TakeRandom(1, combatState.RunState.Rng.CombatTargets)
+                    .FirstOrDefault();
                 if (randomEnemy == null) return;
                 await CreatureCmd.Damage(ctx, randomEnemy, 2, ValueProp.Unpowered, Owner);
                 break;
@@ -67,9 +79,14 @@ public class GremlinPower(): GremlinsPowerModel(PowerType.Buff, PowerStackType.S
     }
 
     public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props, Creature? dealer,
-        CardModel? cardSource) 
-        => dealer == Owner && cardSource is { EnergyCost.Canonical: 0 } && GremlinsCmd.GetCurrentGremlin(Owner.Player)?
-            .Monster is SneakGremlin ? 2 : 0;
+        CardModel? cardSource)
+    {
+        return dealer == Owner && cardSource is { EnergyCost.Canonical: 0 } && GremlinsCmd
+            .GetCurrentGremlin(Owner.Player)?
+            .Monster is SneakGremlin
+            ? 2
+            : 0;
+    }
 
     public override async Task AfterAttack(PlayerChoiceContext ctx, AttackCommand command)
     {
@@ -79,14 +96,5 @@ public class GremlinPower(): GremlinsPowerModel(PowerType.Buff, PowerStackType.S
         if (gremlin is not { Monster: MadGremlin }) return;
         if (command.Results.SelectMany(e => e).All(e => e.Receiver != player.Creature)) return;
         await PowerCmd.Apply<TemporaryStrengthUpPower>(ctx, player.Creature, 2, player.Creature, null);
-    }
-
-    private MonsterModel? CurrentGremlinMonster =>
-        IsMutable ? GremlinsCmd.GetCurrentGremlin(Owner.Player)?.Monster : null;
-    private string GremlinName => CurrentGremlinMonster?.GetType().Name ?? "None";
-    
-    public void AddDumbVariablesToPowerDescription(LocString description)
-    {
-        description.Add("GremlinVariant", GremlinName);
     }
 }

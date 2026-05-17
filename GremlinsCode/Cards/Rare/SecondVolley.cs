@@ -29,13 +29,12 @@ public class SecondVolley : GremlinsCardModel
         var maxDraw = CardPile.MaxCardsInHand - card.Owner.PlayerCombatState.Hand.Cards.Count(e => e != card);
         return Math.Min(maxDraw, cardsPlayed);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
         if (Owner.PlayerCombatState == null) return;
         var cardsPlayed = ((CalculatedVar)DynamicVars["CardsPlayed"]).Calculate(null);
-        await DownfallCardCmd.GiveCards<Shiv>(Owner, PileType.Hand,  cardsPlayed);
-                    
+        await DownfallCardCmd.GiveCards<Shiv>(Owner, PileType.Hand, cardsPlayed);
     }
 }

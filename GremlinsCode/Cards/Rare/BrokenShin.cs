@@ -16,16 +16,18 @@ public class BrokenShin : GremlinsCardModel
 {
     public BrokenShin() : base(2, CardType.Skill, CardRarity.Rare, TargetType.AnyEnemy)
     {
-        WithCalculatedVar("Agony",0, 1, Calc);
+        WithCalculatedVar("Agony", 0, 1, Calc);
         WithVar("WeakDiv", 4, -1);
         WithKeyword(CardKeyword.Exhaust);
         WithTip(typeof(AgonyPower));
         WithTip(typeof(WeakPower));
     }
 
-    private static decimal Calc(CardModel card, Creature? creature) =>
-        Math.Floor(creature?.GetPowerAmount<WeakPower>() / card.DynamicVars["WeakDiv"].BaseValue ?? 0);
-    
+    private static decimal Calc(CardModel card, Creature? creature)
+    {
+        return Math.Floor(creature?.GetPowerAmount<WeakPower>() / card.DynamicVars["WeakDiv"].BaseValue ?? 0);
+    }
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         if (cardPlay.Target == null) return;

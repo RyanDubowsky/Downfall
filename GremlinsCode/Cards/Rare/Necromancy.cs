@@ -16,9 +16,10 @@ public class Necromancy : GremlinsCardModel
         WithTip(typeof(WizPower));
         WithHeal(10, 3);
     }
+
     protected override bool IsPlayable => Owner.Creature.GetPowerAmount<WizPower>() >= 3;
-    protected override bool ShouldGlowGoldInternal =>  Owner.Creature.GetPowerAmount<WizPower>() >= 3;
-    
+    protected override bool ShouldGlowGoldInternal => Owner.Creature.GetPowerAmount<WizPower>() >= 3;
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await PowerCmd.Remove<WizPower>(Owner.Creature);

@@ -14,7 +14,7 @@ public class Erupt : GremlinsCardModel
         WithPower<TemporaryStrengthUpPower>(5, 2);
         WithKeyword(CardKeyword.Exhaust);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<TemporaryStrengthUpPower>(ctx, this);

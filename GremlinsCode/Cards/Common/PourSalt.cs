@@ -19,7 +19,7 @@ public class PourSalt : GremlinsCardModel
         WithCards(2, 1);
         WithTip(typeof(WeakPower));
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);

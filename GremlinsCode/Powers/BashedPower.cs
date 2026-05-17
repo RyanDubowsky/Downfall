@@ -13,12 +13,13 @@ public class BashedPower : GremlinsPowerModel
 {
     public override PowerInstanceType InstanceType => PowerInstanceType.InstancedPerApplier;
 
-    protected override async Task AfterBlockGained(PlayerChoiceContext ctx, Creature creature, decimal amount, ValueProp props, CardModel? cardSource)
+    protected override async Task AfterBlockGained(PlayerChoiceContext ctx, Creature creature, decimal amount,
+        ValueProp props, CardModel? cardSource)
     {
         if (creature != Applier) return;
         await CreatureCmd.Damage(ctx, Owner, Amount, ValueProp.Unpowered | ValueProp.Move, creature);
     }
-    
+
     public override async Task AfterTurnEnd(PlayerChoiceContext ctx, CombatSide side)
     {
         if (side != Owner.Side) return;

@@ -10,15 +10,15 @@ namespace Gremlins.GremlinsCode.Vfx;
 public partial class NGremlinsMerchantCharacter : NMerchantCharacter
 {
     private NSpineCreatureVisuals _angry = null!;
+    private Node2D _body = null!;
     private NSpineCreatureVisuals _fat = null!;
     private NSpineCreatureVisuals _shield = null!;
     private NSpineCreatureVisuals _sneak = null!;
     private NSpineCreatureVisuals _wizard = null!;
-    private Node2D _body = null!;
 
     public override void _Ready()
     {
-        _body = GetNode<Node2D>((NodePath) "%Visuals");
+        _body = GetNode<Node2D>((NodePath)"%Visuals");
         _angry = _body.GetNode<NSpineCreatureVisuals>("AngryCombat");
         _fat = _body.GetNode<NSpineCreatureVisuals>("FatCombat");
         _shield = _body.GetNode<NSpineCreatureVisuals>("ShieldCombat");

@@ -9,15 +9,15 @@ namespace Gremlins.GremlinsCode.Cards.Uncommon;
 [Pool(typeof(GremlinsCardPool))]
 public class Kablamo : GremlinsCardModel
 {
-    public override bool IgnoreWiz => true;
-
     public Kablamo() : base(2, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
     {
         WithDamage(4, 2);
         WithRepeat(2);
         WithTip(typeof(WizPower));
     }
-    
+
+    public override bool IgnoreWiz => true;
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay, DynamicVars.Repeat.IntValue).Execute(ctx);

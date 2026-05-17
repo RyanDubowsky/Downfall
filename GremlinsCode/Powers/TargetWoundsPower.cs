@@ -10,5 +10,7 @@ public class TargetWoundsPower : GremlinsPowerModel
 {
     public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props, Creature? dealer,
         CardModel? cardSource)
-        =>   target?.GetPowerAmount<WeakPower>() > 0 ? Amount : 0;
+    {
+        return target?.GetPowerAmount<WeakPower>() > 0 ? Amount : 0;
+    }
 }

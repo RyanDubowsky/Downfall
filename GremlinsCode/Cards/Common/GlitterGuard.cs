@@ -15,7 +15,7 @@ public class GlitterGuard : GremlinsCardModel
         WithUpgradingCardTip<Ward>();
         WithCards(2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await DownfallCardCmd.GiveCards<Ward>(Owner, PileType.Hand, DynamicVars.Cards.IntValue, upgraded: IsUpgraded);

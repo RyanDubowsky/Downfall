@@ -13,7 +13,8 @@ public class CrippledPower : GremlinsPowerModel
 {
     public override PowerInstanceType InstanceType => PowerInstanceType.InstancedPerApplier;
 
-    public override async Task AfterPowerAmountChanged(PlayerChoiceContext ctx, PowerModel power, decimal amount, Creature? applier,
+    public override async Task AfterPowerAmountChanged(PlayerChoiceContext ctx, PowerModel power, decimal amount,
+        Creature? applier,
         CardModel? cardSource)
     {
         if (Applier == null || applier != Applier || power.Owner != Owner || power is not WeakPower) return;

@@ -15,11 +15,11 @@ public class Mockery : GremlinsCardModel
         WithPower<WeakPower>(1, 1);
         WithBlock(9, 3);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         var power = (await MyCommonActions.Apply<WeakPower>(ctx, this, cardPlay)).ToList().FirstOrDefault();
-        if (power ==  null ||power.Amount < 3) return;
+        if (power == null || power.Amount < 3) return;
         await CommonActions.CardBlock(this, cardPlay);
     }
 }

@@ -13,7 +13,7 @@ public class DaggerDance : GremlinsCardModel
         WithDamage(3);
         WithRepeat(2, 1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay, DynamicVars.Repeat.IntValue).Execute(ctx);

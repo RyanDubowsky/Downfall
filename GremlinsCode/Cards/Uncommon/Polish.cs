@@ -21,7 +21,7 @@ public class Polish : GremlinsCardModel
         WithTip(typeof(Ward));
         WithTip(StaticHoverTip.Block);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<AccuracyPower>(ctx, this);

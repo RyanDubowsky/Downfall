@@ -21,8 +21,10 @@ public class Flurry : GremlinsCardModel
     }
 
     private static decimal Calc(CardModel card, Creature? creature)
-        => CombatManager.Instance.History.CardPlaysFinished.Count(e => e.HappenedThisTurn(card.CombatState));
-    
+    {
+        return CombatManager.Instance.History.CardPlaysFinished.Count(e => e.HappenedThisTurn(card.CombatState));
+    }
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         var amount = (int)((CalculatedVar)DynamicVars["Repeat"]).Calculate(cardPlay.Target);

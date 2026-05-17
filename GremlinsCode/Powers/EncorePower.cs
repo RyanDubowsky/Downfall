@@ -8,10 +8,13 @@ namespace Gremlins.GremlinsCode.Powers;
 
 public class EncorePower : GremlinsPowerModel, IModifyWizExtraDamage
 {
-    public decimal ModifyWizExtraDamage(WizPower wiz, decimal extraDamage) =>
-        wiz.Owner == Owner ? extraDamage + Amount : extraDamage;
+    public decimal ModifyWizExtraDamage(WizPower wiz, decimal extraDamage)
+    {
+        return wiz.Owner == Owner ? extraDamage + Amount : extraDamage;
+    }
 
-    public override Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier,
+    public override Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount,
+        Creature? applier,
         CardModel? cardSource)
     {
         if (power == this) Owner.GetPower<WizPower>()?.UpdateExtraDamage();

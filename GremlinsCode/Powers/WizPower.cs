@@ -1,6 +1,5 @@
 ﻿using BaseLib.Abstracts;
 using BaseLib.Extensions;
-using Downfall.DownfallCode.Interfaces;
 using Gremlins.GremlinsCode.Cards;
 using Gremlins.GremlinsCode.Core;
 using Gremlins.GremlinsCode.Events;
@@ -15,10 +14,16 @@ namespace Gremlins.GremlinsCode.Powers;
 
 public class WizPower : GremlinsPowerModel, IHasSecondAmount
 {
-
     public WizPower()
     {
         WithVar("ExtraDamage", 7);
+    }
+
+    private decimal ExtraDamage => GremlinsHook.ModifyWizExtraDamage(this, 7);
+
+    public string GetSecondAmount()
+    {
+        return Amount < 3 ? "" : $"{DynamicVars["ExtraDamage"].BaseValue}";
     }
 
     protected override Task AfterApplied(PlayerChoiceContext ctx, Creature? applier, CardModel? cardSource)
@@ -36,26 +41,28 @@ public class WizPower : GremlinsPowerModel, IHasSecondAmount
         this.InvokeSecondAmountChanged();
     }
 
-    public override Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier,
+    public override Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount,
+        Creature? applier,
         CardModel? cardSource)
     {
-        if (power == this)this.InvokeSecondAmountChanged();
+        if (power == this) this.InvokeSecondAmountChanged();
         return Task.CompletedTask;
     }
 
-    private decimal ExtraDamage => GremlinsHook.ModifyWizExtraDamage(this, 7);
 
-    public string GetSecondAmount() =>  Amount < 3 ? "" :  $"{DynamicVars["ExtraDamage"].BaseValue}";
-    
-    
-    protected override object InitInternalData() => new Data();
+    protected override object InitInternalData()
+    {
+        return new Data();
+    }
 
     public override Task BeforeAttack(AttackCommand command)
     {
         if (Amount < 3 || command.Attacker != Owner || !command.DamageProps.IsPoweredAttack())
             return Task.CompletedTask;
         var internalData = GetInternalData<Data>();
-        if (internalData.CommandToModify != null || command.ModelSource != null && command.ModelSource is not CardModel || !command.DamageProps.IsPoweredAttack())
+        if (internalData.CommandToModify != null ||
+            (command.ModelSource != null && command.ModelSource is not CardModel) ||
+            !command.DamageProps.IsPoweredAttack())
             return Task.CompletedTask;
         internalData.CommandToModify = command;
         return Task.CompletedTask;
@@ -68,17 +75,20 @@ public class WizPower : GremlinsPowerModel, IHasSecondAmount
         Creature? dealer,
         CardModel? cardSource)
     {
-        if (Amount < 3 ||  Owner != dealer || !props.IsPoweredAttack())
+        if (Amount < 3 || Owner != dealer || !props.IsPoweredAttack())
             return 0M;
         var internalData = GetInternalData<Data>();
-        return internalData.CommandToModify != null && cardSource != null && 
-            cardSource != internalData.CommandToModify.ModelSource || internalData.CommandToModify != null && 
-            internalData.CommandToModify.Attacker != dealer ? 0M : DynamicVars["ExtraDamage"].BaseValue;
+        return (internalData.CommandToModify != null && cardSource != null &&
+                cardSource != internalData.CommandToModify.ModelSource) || (internalData.CommandToModify != null &&
+                                                                            internalData.CommandToModify.Attacker !=
+                                                                            dealer)
+            ? 0M
+            : DynamicVars["ExtraDamage"].BaseValue;
     }
 
     public override async Task AfterAttack(PlayerChoiceContext ctx, AttackCommand command)
     {
-        if (Amount < 3 ) return;
+        if (Amount < 3) return;
         var internalData = GetInternalData<Data>();
         if (command != internalData.CommandToModify)
             return;
@@ -86,7 +96,9 @@ public class WizPower : GremlinsPowerModel, IHasSecondAmount
         {
             internalData.CommandToModify = null;
             return;
-        };
+        }
+
+        ;
         await PowerCmd.Remove<WizPower>(Owner);
     }
 

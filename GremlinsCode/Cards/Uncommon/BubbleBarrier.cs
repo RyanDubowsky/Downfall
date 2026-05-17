@@ -16,7 +16,7 @@ public class BubbleBarrier : GremlinsCardModel
         WithCostUpgradeBy(-1);
         WithTip(StaticHoverTip.Block);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<BubbleBarrierPower>(ctx, this);

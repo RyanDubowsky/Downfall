@@ -17,10 +17,11 @@ public class PinNeedle : GremlinsCardModel
         WithDamage(8, 2);
         WithKeyword(CardKeyword.Exhaust);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
-        await DownfallCardCmd.GiveCards<Pinprick>(Owner, PileType.Draw, DynamicVars.Cards.BaseValue, CardPilePosition.Random, IsUpgraded);
+        await DownfallCardCmd.GiveCards<Pinprick>(Owner, PileType.Draw, DynamicVars.Cards.BaseValue,
+            CardPilePosition.Random, IsUpgraded);
     }
 }

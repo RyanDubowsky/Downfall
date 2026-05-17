@@ -10,6 +10,7 @@ public class UnforgivingPower() : GremlinsPowerModel(PowerType.Buff, PowerStackT
 {
     public override decimal ModifyPowerAmountGiven(PowerModel power, Creature giver, decimal amount, Creature? target,
         CardModel? cardSource)
-        => (power is StrengthPower && power.Owner == Owner && amount < 0) ? 0 : amount;
-    
+    {
+        return power is StrengthPower && power.Owner == Owner && amount < 0 ? 0 : amount;
+    }
 }

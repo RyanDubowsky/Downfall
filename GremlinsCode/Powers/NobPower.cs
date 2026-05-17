@@ -13,13 +13,25 @@ using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace Gremlins.GremlinsCode.Powers;
 
-public class NobPower() : GremlinsPowerModel(PowerType.Buff, PowerStackType.Single), IShouldGremlinSwap, IAfterGremlinSwap
+public class NobPower()
+    : GremlinsPowerModel(PowerType.Buff, PowerStackType.Single), IShouldGremlinSwap, IAfterGremlinSwap
 {
+    private static readonly LocString GremlinNobDialogue = new("monsters", "GREMLINS-GREMLIN_NOB.banter");
+
     private static ModSoundEffect SoundEffect => new(
         new ModSoundEntry("res://Gremlins/audio/character_select/STS_VO_GremlinNob_1a_v3.ogg", 5, 0.1f, 1, 10)
     );
 
-    private static readonly LocString GremlinNobDialogue = new("monsters", "GREMLINS-GREMLIN_NOB.banter");
+    public async Task AfterGremlinSwap(PlayerChoiceContext ctx, Player player, GremlinSwapType gremlinSwapType)
+    {
+        if (gremlinSwapType != GremlinSwapType.Death) return;
+        await PowerCmd.Remove(this);
+    }
+
+    public bool ShouldGremlinSwap(Player player, Creature gremlin)
+    {
+        return player.Creature != Owner || gremlin.Monster is GremlinNob;
+    }
 
     protected override async Task AfterApplied(PlayerChoiceContext ctx, Creature? applier, CardModel? cardSource)
     {
@@ -39,10 +51,7 @@ public class NobPower() : GremlinsPowerModel(PowerType.Buff, PowerStackType.Sing
         Creature? applier,
         CardModel? cardSource)
     {
-        if (power is TempHpPower && power.Amount <= 0)
-        {
-            await PowerCmd.Remove(this);
-        }
+        if (power is TempHpPower && power.Amount <= 0) await PowerCmd.Remove(this);
     }
 
 
@@ -52,14 +61,5 @@ public class NobPower() : GremlinsPowerModel(PowerType.Buff, PowerStackType.Sing
         var a = GremlinsCmd.GetCurrentGremlin(Owner.Player);
         if (a is not { Monster: GremlinNob }) return;
         await GremlinsCmd.KillGremlin(ctx, Owner.Player, a);
-    }
-
-    public bool ShouldGremlinSwap(Player player, Creature gremlin) =>
-        player.Creature != Owner || gremlin.Monster is GremlinNob;
-
-    public  async Task AfterGremlinSwap(PlayerChoiceContext ctx, Player player, GremlinSwapType gremlinSwapType)
-    {
-        if (gremlinSwapType != GremlinSwapType.Death) return;
-        await PowerCmd.Remove(this);
     }
 }

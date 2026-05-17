@@ -14,7 +14,7 @@ public class GremlinOffensive : GremlinsCardModel
         WithDamage(7, 3);
         WithKeyword(CardKeyword.Exhaust);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);

@@ -16,7 +16,7 @@ public class Tricksy : GremlinsCardModel
 
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
-        var cards =  await CommonActions.Draw(this, ctx);
+        var cards = await CommonActions.Draw(this, ctx);
         await CardCmd.Discard(ctx, cards.Where(e => e.Type != CardType.Attack));
         await GremlinsCmd.SwapToType<SneakGremlin>(ctx, Owner);
     }

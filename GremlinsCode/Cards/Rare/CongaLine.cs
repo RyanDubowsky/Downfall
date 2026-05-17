@@ -14,7 +14,7 @@ public class CongaLine : GremlinsCardModel
         WithKeyword(CardKeyword.Innate, UpgradeType.Add);
         WithPower<CongaLinePower>(1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<CongaLinePower>(ctx, this);

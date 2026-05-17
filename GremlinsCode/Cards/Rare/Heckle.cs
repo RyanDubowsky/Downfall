@@ -14,7 +14,7 @@ public class Heckle : GremlinsCardModel
         WithCostUpgradeBy(-1);
         WithPower<HecklePower>(2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<HecklePower>(ctx, this);

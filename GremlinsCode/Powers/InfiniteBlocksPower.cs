@@ -14,7 +14,7 @@ public class InfiniteBlocksPower : GremlinsPowerModel
     {
         WithTip(typeof(Ward));
     }
-    
+
     public override async Task BeforeHandDraw(
         Player player,
         PlayerChoiceContext choiceContext,

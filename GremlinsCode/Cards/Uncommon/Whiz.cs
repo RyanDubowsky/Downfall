@@ -14,7 +14,7 @@ public class Whiz : GremlinsCardModel
     public Whiz() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
         WithKeyword(CardKeyword.Exhaust);
-       
+
         WithPower<WizPower>(1, 1);
         WithTips(e =>
             e.IsUpgraded
@@ -22,18 +22,13 @@ public class Whiz : GremlinsCardModel
                 : [HoverTipFactory.FromPower<MakingMagicPower>()]);
         WithUpgradingCardTip<Bang>();
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<WizPower>(ctx, this);
         if (IsUpgraded)
-        {
             await CommonActions.ApplySelf<MakingMagicPlusPower>(ctx, this, 1);
-        }
         else
-        {
             await CommonActions.ApplySelf<MakingMagicPower>(ctx, this, 1);
-        }
-
     }
 }

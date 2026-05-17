@@ -14,7 +14,7 @@ public class ChangeO : GremlinsCardModel
         WithBlock(8, 2);
         WithPower<WizPower>(1, 1);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.CardBlock(this, cardPlay);

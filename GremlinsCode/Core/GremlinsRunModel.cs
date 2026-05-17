@@ -41,18 +41,14 @@ public class GremlinsRunModel() : CustomSingletonModel(false, true)
         {
             var saveData = DownfallSaveManager.GetPlayerData(player);
             if (player.Character is Gremlins)
-            {
                 saveData.GremlinStats = StartingGremlins.Select(m => new GremlinSaveData
                 {
                     ModelId = m.Id,
-                    Hp      = m.MaxInitialHp,
-                    MaxHp   = m.MaxInitialHp,
+                    Hp = m.MaxInitialHp,
+                    MaxHp = m.MaxInitialHp
                 }).ToList();
-            }
             else
-            {
                 saveData.GremlinStats = [];
-            }
         }
 
         return Task.CompletedTask;
@@ -68,7 +64,7 @@ public class GremlinsRunModel() : CustomSingletonModel(false, true)
             if (player.Character is not Gremlins) continue;
             if (player.PlayerCombatState == null) continue;
 
-            var state    = GetState(player);
+            var state = GetState(player);
             var saveData = DownfallSaveManager.GetPlayerData(player);
             state.Reset();
 
@@ -81,14 +77,13 @@ public class GremlinsRunModel() : CustomSingletonModel(false, true)
             var creatureNode = NCombatRoom.Instance?.GetCreatureNode(player.Creature);
             if (creatureNode?.Visuals is NGremlinsCreatureVisuals visuals)
                 visuals.ArrangeGremlins(state.Gremlins);
-            
+
             var active = state.Active;
             if (active == null) continue;
             player.Creature.SetMaxHpInternal(active.MaxHp);
             player.Creature.SetCurrentHpInternal(active.CurrentHp);
         }
-        
-        
+
 
         return Task.CompletedTask;
     }
@@ -101,12 +96,12 @@ public class GremlinsRunModel() : CustomSingletonModel(false, true)
         foreach (var player in combatState.Players)
         {
             if (player.Character is not Gremlins) continue;
-            var state    = GetState(player);
+            var state = GetState(player);
             var saveData = DownfallSaveManager.GetPlayerData(player);
             saveData.GremlinStats = state.ToSaveData(player);
             state.Reset();
         }
+
         return Task.CompletedTask;
     }
-    
 }

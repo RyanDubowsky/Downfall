@@ -11,14 +11,12 @@ public class BulkUp : GremlinsCardModel
 {
     public BulkUp() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
-        WithTempHp(4,2);
+        WithTempHp(4, 2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await DownfallCmd.GainTempHp(ctx, this);
         await GremlinsCmd.SwapToType<FatGremlin>(ctx, Owner);
     }
-    
-    
 }

@@ -1,6 +1,5 @@
 ﻿using BaseLib.Abstracts;
 using BaseLib.Extensions;
-using Downfall.DownfallCode.Interfaces;
 using Gremlins.GremlinsCode.Core;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -11,16 +10,19 @@ namespace Gremlins.GremlinsCode.Powers;
 
 public class MakeshiftArmorPower : GremlinsPowerModel, IHasSecondAmount
 {
-
     public MakeshiftArmorPower()
     {
         WithVar("AttacksLeft", 7);
     }
 
+    public string GetSecondAmount()
+    {
+        return $"{DynamicVars["AttacksLeft"].IntValue}";
+    }
+
 
     public override async Task AfterCardPlayed(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
-
         if (cardPlay.Card.Owner.Creature != Owner || cardPlay.Card.Type != CardType.Attack) return;
         DynamicVars["AttacksLeft"].UpgradeValueBy(-1);
         if (DynamicVars["AttacksLeft"].IntValue <= 0)
@@ -29,8 +31,7 @@ public class MakeshiftArmorPower : GremlinsPowerModel, IHasSecondAmount
             DynamicVars["AttacksLeft"].ResetToBase();
             DynamicVars["AttacksLeft"].UpgradeValueBy(7);
         }
+
         this.InvokeSecondAmountChanged();
     }
-    
-    public string GetSecondAmount() => $"{DynamicVars["AttacksLeft"].IntValue}";
 }

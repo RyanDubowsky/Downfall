@@ -13,7 +13,7 @@ public class Flex : GremlinsCardModel
     {
         WithPower<TemporaryStrengthUpPower>(2, 2);
     }
-    
+
     protected override async Task PlayEffect(PlayerChoiceContext ctx, CardPlay cardPlay)
     {
         await CommonActions.ApplySelf<TemporaryStrengthUpPower>(ctx, this);
