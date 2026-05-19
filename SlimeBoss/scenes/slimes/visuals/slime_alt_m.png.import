@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdah52uxt2cme"
-path="res://.godot/imported/champ.png-3faf1c53e7c6c2b108902fb7e0a57efa.ctex"
+uid="uid://dcf6eghryrwbx"
+path="res://.godot/imported/slime_alt_m.png-360e59436be47f7c8cc55ca9d6090742.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Downfall/character/visuals/champ.png"
-dest_files=["res://.godot/imported/champ.png-3faf1c53e7c6c2b108902fb7e0a57efa.ctex"]
+source_file="res://SlimeBoss/scenes/slimes/visuals/slime_alt_m.png"
+dest_files=["res://.godot/imported/slime_alt_m.png-360e59436be47f7c8cc55ca9d6090742.ctex"]
 
 [params]
 

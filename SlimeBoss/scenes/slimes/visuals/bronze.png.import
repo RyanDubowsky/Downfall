@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkt8lr3t8esa5"
-path="res://.godot/imported/snecko.png-197e3da6a4715ffca1d9947d19fc1cee.ctex"
+uid="uid://t2uggfsdtnv3"
+path="res://.godot/imported/bronze.png-44d7189aa62a65e2ac329310ce12f7d4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Downfall/character/visuals/snecko.png"
-dest_files=["res://.godot/imported/snecko.png-197e3da6a4715ffca1d9947d19fc1cee.ctex"]
+source_file="res://SlimeBoss/scenes/slimes/visuals/bronze.png"
+dest_files=["res://.godot/imported/bronze.png-44d7189aa62a65e2ac329310ce12f7d4.ctex"]
 
 [params]
 

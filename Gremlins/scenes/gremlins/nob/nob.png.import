@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhjvd75xc7lu4"
-path="res://.godot/imported/guardian.png-42ec3fcb80475bd20636473366fb86ac.ctex"
+uid="uid://cwgopt3dyu65k"
+path="res://.godot/imported/nob.png-000083035ae7120b87015681c5e7ffbf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Downfall/character/visuals/guardian.png"
-dest_files=["res://.godot/imported/guardian.png-42ec3fcb80475bd20636473366fb86ac.ctex"]
+source_file="res://Gremlins/scenes/gremlins/nob/nob.png"
+dest_files=["res://.godot/imported/nob.png-000083035ae7120b87015681c5e7ffbf.ctex"]
 
 [params]
 

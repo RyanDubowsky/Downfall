@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d4c73jct0rcy4"
-path="res://.godot/imported/automaton.png-1fe4cab60a509fb6c35466104f46a511.ctex"
+uid="uid://2xkhmtjnauhm"
+path="res://.godot/imported/fat.png-d3b51e4b37cf3666d241e16f1b2753d9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Downfall/character/visuals/automaton.png"
-dest_files=["res://.godot/imported/automaton.png-1fe4cab60a509fb6c35466104f46a511.ctex"]
+source_file="res://Gremlins/scenes/gremlins/fat/fat.png"
+dest_files=["res://.godot/imported/fat.png-d3b51e4b37cf3666d241e16f1b2753d9.ctex"]
 
 [params]
 
