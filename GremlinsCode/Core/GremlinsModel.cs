@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace Gremlins.GremlinsCode.Core;
 
-public class GremlinsModel() : CustomSingletonModel(true, false)
+public class GremlinsModel() : CustomSingletonModel(HookType.Combat)
 {
     public override async Task BeforeHandDraw(Player player, PlayerChoiceContext ctx, ICombatState combatState)
     {
