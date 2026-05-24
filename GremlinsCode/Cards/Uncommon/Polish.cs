@@ -13,7 +13,7 @@ namespace Gremlins.GremlinsCode.Cards.Uncommon;
 [Pool(typeof(GremlinsCardPool))]
 public class Polish : GremlinsCardModel
 {
-    public Polish() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.None)
+    public Polish() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
         WithPower<AccuracyPower>(2, 1);
         WithPower<PolishPower>(2, 1);

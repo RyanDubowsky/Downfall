@@ -9,7 +9,7 @@ namespace Gremlins.GremlinsCode.Cards.Rare;
 [Pool(typeof(GremlinsCardPool))]
 public class Encore : GremlinsCardModel
 {
-    public Encore() : base(1, CardType.Power, CardRarity.Rare, TargetType.None)
+    public Encore() : base(1, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
         WithPower<WizPower>(3);
         WithPower<EncorePower>(4, 2);

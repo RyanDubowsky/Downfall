@@ -10,7 +10,7 @@ namespace Gremlins.GremlinsCode.Cards.Rare;
 [Pool(typeof(GremlinsCardPool))]
 public class ShadowShiv : GremlinsCardModel
 {
-    public ShadowShiv() : base(3, CardType.Power, CardRarity.Rare, TargetType.None)
+    public ShadowShiv() : base(3, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
         WithPower<ShadowShivPower>(1);
         WithCostUpgradeBy(-1);

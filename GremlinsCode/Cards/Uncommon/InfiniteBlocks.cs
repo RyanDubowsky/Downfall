@@ -10,7 +10,7 @@ namespace Gremlins.GremlinsCode.Cards.Uncommon;
 [Pool(typeof(GremlinsCardPool))]
 public class InfiniteBlocks : GremlinsCardModel
 {
-    public InfiniteBlocks() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.None)
+    public InfiniteBlocks() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
         WithPower<InfiniteBlocksPower>(1);
         WithKeyword(CardKeyword.Innate, UpgradeType.Add);

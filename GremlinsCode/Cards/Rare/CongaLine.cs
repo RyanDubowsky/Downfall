@@ -9,7 +9,7 @@ namespace Gremlins.GremlinsCode.Cards.Rare;
 [Pool(typeof(GremlinsCardPool))]
 public class CongaLine : GremlinsCardModel
 {
-    public CongaLine() : base(2, CardType.Power, CardRarity.Rare, TargetType.None)
+    public CongaLine() : base(2, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
         WithKeyword(CardKeyword.Innate, UpgradeType.Add);
         WithPower<CongaLinePower>(1);

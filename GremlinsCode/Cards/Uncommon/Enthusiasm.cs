@@ -9,7 +9,7 @@ namespace Gremlins.GremlinsCode.Cards.Uncommon;
 [Pool(typeof(GremlinsCardPool))]
 public class Enthusiasm : GremlinsCardModel
 {
-    public Enthusiasm() : base(2, CardType.Power, CardRarity.Uncommon, TargetType.None)
+    public Enthusiasm() : base(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
         WithPower<EnthusiasmPower>(1);
         WithCostUpgradeBy(-1);

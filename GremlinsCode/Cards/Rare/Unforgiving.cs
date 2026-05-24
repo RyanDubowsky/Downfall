@@ -9,7 +9,7 @@ namespace Gremlins.GremlinsCode.Cards.Rare;
 [Pool(typeof(GremlinsCardPool))]
 public class Unforgiving : GremlinsCardModel
 {
-    public Unforgiving() : base(3, CardType.Power, CardRarity.Rare, TargetType.None)
+    public Unforgiving() : base(3, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
         WithPower<UnforgivingPower>(1);
     }

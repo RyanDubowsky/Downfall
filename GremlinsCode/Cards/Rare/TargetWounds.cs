@@ -9,7 +9,7 @@ namespace Gremlins.GremlinsCode.Cards.Rare;
 [Pool(typeof(GremlinsCardPool))]
 public class TargetWounds : GremlinsCardModel
 {
-    public TargetWounds() : base(1, CardType.Power, CardRarity.Rare, TargetType.None)
+    public TargetWounds() : base(1, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
         WithPower<TargetWoundsPower>(3, 2);
     }
