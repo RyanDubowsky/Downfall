@@ -9,7 +9,7 @@ namespace Gremlins.GremlinsCode.Cards.Rare;
 [Pool(typeof(GremlinsCardPool))]
 public class Heckle : GremlinsCardModel
 {
-    public Heckle() : base(2, CardType.Power, CardRarity.Rare, TargetType.None)
+    public Heckle() : base(2, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
         WithCostUpgradeBy(-1);
         WithPower<HecklePower>(2);

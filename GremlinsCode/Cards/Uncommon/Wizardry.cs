@@ -9,7 +9,7 @@ namespace Gremlins.GremlinsCode.Cards.Uncommon;
 [Pool(typeof(GremlinsCardPool))]
 public class Wizardry : GremlinsCardModel
 {
-    public Wizardry() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.None)
+    public Wizardry() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
         WithPower<WizardryPower>(1);
         WithKeyword(CardKeyword.Innate, UpgradeType.Add);

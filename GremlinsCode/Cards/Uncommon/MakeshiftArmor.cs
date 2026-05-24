@@ -10,7 +10,7 @@ namespace Gremlins.GremlinsCode.Cards.Uncommon;
 [Pool(typeof(GremlinsCardPool))]
 public class MakeshiftArmor : GremlinsCardModel
 {
-    public MakeshiftArmor() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.None)
+    public MakeshiftArmor() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
         WithPower<ArtifactPower>(0, 1);
         WithPower<MakeshiftArmorPower>(1);
