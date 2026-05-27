@@ -13,7 +13,7 @@ public class GremlinToss : GremlinsCardModel
 {
     public GremlinToss() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
-        WithTempHp(3);
+        this.WithTempHp(3);
         WithCostUpgradeBy(-1);
         WithCalculatedDamage(0, Calc);
     }

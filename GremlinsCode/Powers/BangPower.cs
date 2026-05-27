@@ -1,5 +1,4 @@
-﻿using Gremlins.GremlinsCode.Cards;
-using Gremlins.GremlinsCode.Core;
+﻿using Gremlins.GremlinsCode.Core;
 using Gremlins.GremlinsCode.CustomEnums;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;

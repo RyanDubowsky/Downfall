@@ -12,7 +12,7 @@ public class CounterStrike : GremlinsCardModel
     {
         WithTags(CardTag.Strike);
         WithDamage(8, 2);
-        WithRepeat(2, 1);
+        this.WithRepeat(2, 1);
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay cardPlay)

@@ -13,11 +13,11 @@ public class Kablamo : GremlinsCardModel
     public Kablamo() : base(2, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
     {
         WithDamage(4, 2);
-        WithRepeat(2);
+        this.WithRepeat(2);
         WithTags(GremlinTag.IgnoreWiz);
         WithTip(typeof(WizPower));
     }
-    
+
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay cardPlay)
     {

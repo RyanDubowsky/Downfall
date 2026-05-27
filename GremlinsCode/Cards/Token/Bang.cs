@@ -15,7 +15,7 @@ public class Bang : GremlinsCardModel
         WithKeyword(CardKeyword.Exhaust);
         WithUpgradingCardTip<Whiz>();
         WithDamage(0);
-        WithRepeat(3, 1);
+        this.WithRepeat(3, 1);
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay cardPlay)

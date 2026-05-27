@@ -1,6 +1,5 @@
 ﻿using Downfall.DownfallCode.Abstract;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 
 namespace Gremlins.GremlinsCode.Cards;
 

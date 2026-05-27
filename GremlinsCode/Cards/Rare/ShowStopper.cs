@@ -12,7 +12,7 @@ public class ShowStopper : GremlinsCardModel
     public ShowStopper() : base(0, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies)
     {
         WithDamage(3);
-        WithRepeat(5, 1);
+        this.WithRepeat(5, 1);
         WithTip(typeof(WizPower));
     }
 

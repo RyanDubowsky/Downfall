@@ -17,7 +17,7 @@ public class Fury : GremlinsCardModel
     public Fury() : base(3, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
         WithDamage(5, 2);
-        WithRepeat(3);
+        this.WithRepeat(3);
         WithEnergy(1);
         WithPower<StrengthPower>(2);
     }

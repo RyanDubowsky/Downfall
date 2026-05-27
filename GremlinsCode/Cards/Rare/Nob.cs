@@ -12,7 +12,7 @@ public class Nob : GremlinsCardModel
 {
     public Nob() : base(4, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
-        WithTempHp(20, 10);
+        this.WithTempHp(20, 10);
         WithPower<NobPower>(1);
     }
 

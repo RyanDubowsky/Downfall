@@ -12,7 +12,7 @@ public class Pickpocket : GremlinsCardModel
     public Pickpocket() : base(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
         WithDamage(10, 4);
-        WithGold(10, 4);
+        this.WithGold(10, 4);
         WithKeyword(CardKeyword.Exhaust);
     }
 

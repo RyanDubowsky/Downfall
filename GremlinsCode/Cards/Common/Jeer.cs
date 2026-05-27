@@ -13,7 +13,7 @@ public class Jeer : GremlinsCardModel
     public Jeer() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
         WithDamage(7, 4);
-        WithTempHp(2, 2);
+        this.WithTempHp(2, 2);
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay cardPlay)
