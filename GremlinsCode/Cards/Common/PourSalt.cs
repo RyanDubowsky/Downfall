@@ -15,9 +15,9 @@ public class PourSalt : GremlinsCardModel
     public PourSalt() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
         WithDamage(4);
-        WithTip(typeof(Shiv));
+        this.WithTip<Shiv>();
         WithCards(2, 1);
-        WithTip(typeof(WeakPower));
+        this.WithTip<WeakPower>();
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay cardPlay)

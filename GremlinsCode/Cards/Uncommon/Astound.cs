@@ -15,7 +15,7 @@ public class Astound : GremlinsCardModel
     {
         WithBlock(5, 2);
         WithUpgradingCardTip<Ward>();
-        WithTip(typeof(WizPower));
+        this.WithTip<WizPower>();
         WithCards(2);
     }
 

@@ -14,7 +14,7 @@ public class FairyDust : GremlinsCardModel
     {
         WithCostUpgradeBy(-1);
         WithCards(2);
-        WithTip(typeof(Ward));
+        this.WithTip<Ward>();
         WithKeyword(CardKeyword.Exhaust);
     }
 

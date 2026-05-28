@@ -19,8 +19,8 @@ public class BrokenShin : GremlinsCardModel
         WithCalculatedVar("Agony", 0, 1, Calc);
         WithVar("WeakDiv", 4, -1);
         WithKeyword(CardKeyword.Exhaust);
-        WithTip(typeof(AgonyPower));
-        WithTip(typeof(WeakPower));
+        this.WithTip<AgonyPower>();
+        this.WithTip<WeakPower>();
     }
 
     private static decimal Calc(CardModel card, Creature? creature)

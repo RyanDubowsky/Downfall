@@ -15,7 +15,7 @@ public class IrksomeBlow : GremlinsCardModel
     public IrksomeBlow() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
         WithVar("StrengthEffect", 4, 2);
-        WithTip(typeof(StrengthPower));
+        this.WithTip<StrengthPower>();
         WithDamage(5);
     }
 

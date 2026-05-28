@@ -13,7 +13,7 @@ public class ShowStopper : GremlinsCardModel
     {
         WithDamage(3);
         this.WithRepeat(5, 1);
-        WithTip(typeof(WizPower));
+        this.WithTip<WizPower>();
     }
 
     protected override bool IsPlayable => Owner.Creature.GetPowerAmount<WizPower>() == 7;

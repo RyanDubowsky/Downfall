@@ -13,7 +13,7 @@ public class ToeStub : GremlinsCardModel
     {
         WithDamage(5, 3);
         WithPower<VulnerablePower>(2, 1);
-        WithTip(typeof(WeakPower));
+        this.WithTip<WeakPower>();
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay cardPlay)

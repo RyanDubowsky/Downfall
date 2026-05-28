@@ -14,7 +14,7 @@ public class InfiniteBlocks : GremlinsCardModel
     {
         WithPower<InfiniteBlocksPower>(1);
         WithKeyword(CardKeyword.Innate, UpgradeType.Add);
-        WithTip(typeof(Ward));
+        this.WithTip<Ward>();
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay cardPlay)

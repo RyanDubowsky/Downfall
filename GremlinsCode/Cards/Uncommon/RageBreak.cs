@@ -12,7 +12,7 @@ public class RageBreak : GremlinsCardModel
 {
     public RageBreak() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
-        WithTip(typeof(PossessStrengthPower));
+        this.WithTip<PossessStrengthPower>();
         WithKeyword(CardKeyword.Exhaust);
         WithBlock(0, 5);
     }

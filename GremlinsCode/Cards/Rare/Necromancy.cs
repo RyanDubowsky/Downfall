@@ -13,7 +13,7 @@ public class Necromancy : GremlinsCardModel
     public Necromancy() : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
         WithKeyword(CardKeyword.Exhaust);
-        WithTip(typeof(WizPower));
+        this.WithTip<WizPower>();
         WithHeal(10, 3);
     }
 

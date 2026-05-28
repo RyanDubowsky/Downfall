@@ -17,8 +17,8 @@ public class Polish : GremlinsCardModel
     {
         WithPower<AccuracyPower>(2, 1);
         WithPower<PolishPower>(2, 1);
-        WithTip(typeof(Shiv));
-        WithTip(typeof(Ward));
+        this.WithTip<Shiv>();
+        this.WithTip<Ward>();
         WithTip(StaticHoverTip.Block);
     }
 

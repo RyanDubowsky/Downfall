@@ -17,7 +17,7 @@ public class Bellow : GremlinsCardModel
     {
         WithKeywords(CardKeyword.Ethereal, CardKeyword.Exhaust);
         WithCalculatedVar("Strength", 2, Calc, 1);
-        WithTip(typeof(StrengthPower));
+        this.WithTip<StrengthPower>();
     }
 
     private static decimal Calc(CardModel card, Creature? _)

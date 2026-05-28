@@ -14,7 +14,7 @@ public class ShadowShiv : GremlinsCardModel
     {
         WithPower<ShadowShivPower>(1);
         WithCostUpgradeBy(-1);
-        WithTip(typeof(Shiv));
+        this.WithTip<Shiv>();
         WithTip(CardKeyword.Exhaust);
     }
 

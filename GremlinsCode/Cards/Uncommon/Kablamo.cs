@@ -15,7 +15,7 @@ public class Kablamo : GremlinsCardModel
         WithDamage(4, 2);
         this.WithRepeat(2);
         WithTags(GremlinTag.IgnoreWiz);
-        WithTip(typeof(WizPower));
+        this.WithTip<WizPower>();
     }
 
 
