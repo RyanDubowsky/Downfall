@@ -14,15 +14,15 @@ public class Flurry : GremlinsCardModel
 {
     public Flurry() : base(1, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
     {
-        WithCalculatedVar("Repeat", 0, Calc);
         WithDamage(3);
         WithCostUpgradeBy(-1);
         WithKeyword(CardKeyword.Exhaust);
+        WithCalculatedVar("Repeat", 0, Calc);
     }
 
     private static decimal Calc(CardModel card, Creature? creature)
     {
-        return CombatManager.Instance.History.CardPlaysFinished.Count(e => e.HappenedThisTurn(card.CombatState));
+        return CombatManager.Instance.History.CardPlaysFinished.Count(e => e.HappenedThisTurn(card.CombatState) && e.Actor == card.Owner.Creature);
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay cardPlay)
