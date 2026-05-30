@@ -1,22 +1,18 @@
+using Downfall.DownfallCode.Powers;
 using Guardian.GuardianCode.Core;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace Guardian.GuardianCode.Powers;
 
-public class ConstructionFormPower : GuardianPowerModel
+public class NextTurnTemporaryStrengthUpPower : GuardianPowerModel
 {
-    public ConstructionFormPower()
-    {
-        this.WithTip<StrengthPower>();
-    }
-
     public override async Task BeforeHandDraw(Player player, PlayerChoiceContext ctx, ICombatState combatState)
     {
-        if (player.Creature != Owner || !Owner.HasPower<BufferPower>()) return;
-        await PowerCmd.Apply<StrengthPower>(ctx, Owner, Amount, Owner, null);
+        if (player.Creature != Owner) return;
+        await PowerCmd.Apply<TemporaryStrengthUpPower>(ctx, Owner, Amount, Owner, null);
+        await PowerCmd.Remove(this);
     }
 }
