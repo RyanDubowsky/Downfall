@@ -16,6 +16,7 @@ namespace Gremlins.GremlinsCode.Core;
 public class Gremlins : DownfallCharacterModel
 {
     private static readonly Color Color = new(0xCA5B5BFF);
+    public override Color EnergyLabelOutlineColor  => new(0x6f0060FF);
     public override string CharId => "Gremlins";
     public override string ModId => GremlinsMainFile.ModId;
     public override Color NameColor => Color;
