@@ -20,33 +20,13 @@ public class MobLeadersCrown : GremlinsRelicModel
         WithEnergy(1);
         WithCards(1);
     }
-    private bool _usedThisCombat;
-
-    private bool UsedThisCombat
-    {
-        get => _usedThisCombat;
-        set
-        {
-            if (_usedThisCombat == value)
-                return;
-            AssertMutable();
-            _usedThisCombat = value;
-        }
-    }
 
     public override async Task AfterShuffle(PlayerChoiceContext ctx, Player shuffler)
     {
-        if (shuffler != Owner || UsedThisCombat) return;
+        if (shuffler != Owner) return;
         Flash();
         await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
         await CardPileCmd.Draw(ctx, Owner);
         await GremlinsCmd.SwapToNext(ctx, Owner);
-        UsedThisCombat = true;
-    }
-    
-    public override Task AfterCombatEnd(CombatRoom _)
-    {
-        UsedThisCombat = false;
-        return Task.CompletedTask;
     }
 }
