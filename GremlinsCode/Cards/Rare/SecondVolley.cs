@@ -34,6 +34,6 @@ public class SecondVolley : GremlinsCardModel
         await CommonActions.CardAttack(this, cardPlay).Execute(ctx);
         if (Owner.PlayerCombatState == null) return;
         var cardsPlayed = ((CalculatedVar)DynamicVars["CardsPlayed"]).Calculate(null);
-        await DownfallCardCmd.GiveCards<Shiv>(Owner, PileType.Hand, cardsPlayed);
+        await DownfallCardCmd.GiveCards<Shiv>(Owner, PileType.Hand, cardsPlayed, upgraded: IsUpgraded);
     }
 }
