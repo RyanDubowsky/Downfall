@@ -24,4 +24,7 @@ public class Irritability : GremlinsCardModel
     }
 }
 
-public class IrritabilityPower : CustomTemporaryPowerModelWrapper<Irritability, ThornsPower>;
+public class IrritabilityPower : CustomTemporaryPowerModelWrapper<Irritability, ThornsPower>
+{
+    protected override bool UntilEndOfOtherSideTurn => true;
+}
